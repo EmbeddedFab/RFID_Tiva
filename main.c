@@ -133,7 +133,7 @@ while (1)
 
             if (ReturnStatus == STATUS_SUCCEED)
             {
-                for (index = 0; index < (CardNumber_NoOfDigits - 4) ; index++ )
+                for (index = 0; index < (CardNumber_NoOfDigits ) ; index++ )
                 {
                     UARTprintf("%X " , (int)*(CardNumber_ptr + index) );
                 }
