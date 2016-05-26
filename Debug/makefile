@@ -31,10 +31,16 @@ RMDIR := RMDIR /S/Q
 -include sources.mk
 -include subdir_vars.mk
 -include ServiceLayer/subdir_vars.mk
+-include RFID_Reference/Mifare_stk_programGUI/serialtemplate/obj/Debug/subdir_vars.mk
+-include RFID_Reference/Mifare_stk_programGUI/serialtemplate/bin/Debug/subdir_vars.mk
+-include RFID_Reference/Mifare_stk_programGUI/subdir_vars.mk
 -include MCAL/subdir_vars.mk
 -include HAL/subdir_vars.mk
 -include subdir_rules.mk
 -include ServiceLayer/subdir_rules.mk
+-include RFID_Reference/Mifare_stk_programGUI/serialtemplate/obj/Debug/subdir_rules.mk
+-include RFID_Reference/Mifare_stk_programGUI/serialtemplate/bin/Debug/subdir_rules.mk
+-include RFID_Reference/Mifare_stk_programGUI/subdir_rules.mk
 -include MCAL/subdir_rules.mk
 -include HAL/subdir_rules.mk
 -include objects.mk
@@ -130,32 +136,32 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXE_OUTPUTS += \
-RFID.out \
+RFID_Tiva.out \
 
 EXE_OUTPUTS__QUOTED += \
-"RFID.out" \
+"RFID_Tiva.out" \
 
 BIN_OUTPUTS += \
-RFID.hex \
+RFID_Tiva.hex \
 
 BIN_OUTPUTS__QUOTED += \
-"RFID.hex" \
+"RFID_Tiva.hex" \
 
 
 # All Target
-all: RFID.out
+all: RFID_Tiva.out
 
 # Tool invocations
-RFID.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
+RFID_Tiva.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM Linker'
-	"C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 --abi=eabi -me -g --gcc --define=ccs="ccs" --define=TARGET_IS_BLIZZARD_RB1 --define=PART_TM4C123GH6PM --display_error_number --diag_warning=225 --diag_wrap=off -z -m"RFID.map" --heap_size=0 --stack_size=512 -i"C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/lib" -i"C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="RFID_linkInfo.xml" --rom_model -o "RFID.out" $(ORDERED_OBJS)
+	"C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 --abi=eabi -me -g --gcc --define=ccs="ccs" --define=TARGET_IS_BLIZZARD_RB1 --define=PART_TM4C123GH6PM --display_error_number --diag_warning=225 --diag_wrap=off -z -m"RFID_Tiva.map" --heap_size=0 --stack_size=512 -i"C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/lib" -i"C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="RFID_Tiva_linkInfo.xml" --rom_model -o "RFID_Tiva.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-RFID.hex: $(EXE_OUTPUTS)
+RFID_Tiva.hex: $(EXE_OUTPUTS)
 	@echo 'Invoking: ARM Hex Utility'
-	"C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/bin/armhex"  -o "RFID.hex" $(EXE_OUTPUTS__QUOTED)
+	"C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/bin/armhex"  -o "RFID_Tiva.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building: $@'
 	@echo ' '
 

@@ -110,6 +110,9 @@ S64_DEPS__QUOTED :=
 SUBDIRS := \
 . \
 ServiceLayer \
+RFID_Reference/Mifare_stk_programGUI/serialtemplate/obj/Debug \
+RFID_Reference/Mifare_stk_programGUI/serialtemplate/bin/Debug \
+RFID_Reference/Mifare_stk_programGUI \
 MCAL \
 HAL \
 

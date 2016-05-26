@@ -48,7 +48,7 @@
 #include "EF_RFID.h"
 #include "EF_RFID_cfg.h"
 
-#define UART_RFID       UART_5
+#define UART_RFID       UART5
 UART_cfg_str  uart_cfg = {UART_RFID, 9600, NUMBER_OF_BITS_8, ONE_STOP_BIT, NO_PARITY, FALSE, FALSE, TRUE, TRUE};
 
 /***************************************************************************
@@ -225,7 +225,6 @@ static BOOLEAN EF_BOOLEAN_RFID_SendFrame (U8_t CMD, U8_t * Data_ptr, U8_t DataLe
 static U8_t EF_u8_RFID_ReceiveFrame (U8_t * RxData_ptr )
 {
     BOOLEAN b_ReturnStatus = 0;     /* Get the Return Status of function in it */
-       U8_t index;                  /* Iterator */
        U8_t command_array[MAX_SEND_CMD_LENGTH]; /* build frame in this array, (we can used Data_ptr only, it helps in Seeing the bytes in Debugging) */
 
     /* Rx Frame structure: [Preamble|Len|Command|Status|Data(if found)|Checksum]*/
@@ -262,7 +261,7 @@ static U8_t EF_u8_RFID_ReceiveFrame (U8_t * RxData_ptr )
 }
 
 /***************************************************************************
- ************************* Global Functions *********************************
+ ************************* Local Functions *********************************
  ***************************************************************************/
 
 /****************************************************************************
@@ -299,39 +298,39 @@ void EF_void_RFID_Init ()
 U8_t EF_u8_RFID_GetCardNumber (U8_t* CardNumber_ptr ,U8_t* CardNumber_NoOFDigits)
 {
     volatile U8_t ReturnStatus = 0;
-    U8_t SendData_ptr[MAX_RECEIVED_LENGTH] ;    /* build data bytes in this array, (not all frame) */
+    U8_t u8TempArray[MAX_CARD_FRAME_LENGTH] ;    /* build data bytes in this array, (not all frame) */
 
     /* Send Frame: [0xBA Len 0x01 Checksum] */
-    ReturnStatus = EF_BOOLEAN_RFID_SendFrame (SELECT_MIFARE_CARD_CMD, SendData_ptr, 0);
+    ReturnStatus = EF_BOOLEAN_RFID_SendFrame (SELECT_MIFARE_CARD_CMD, NULL, 0);
 
     if (ReturnStatus == TRUE)
     {
         /* Get the Response Frame : [0xBD|Len|0x01|Status|UID|Type|Checksum] */
-        ReturnStatus = EF_u8_RFID_ReceiveFrame (SendData_ptr);
+        ReturnStatus = EF_u8_RFID_ReceiveFrame (u8TempArray);
         if (ReturnStatus == TRUE)
         {
             /* Get the Status from the Rx Frame */
-            ReturnStatus = SendData_ptr[STATUS_INDEX];
+            ReturnStatus = u8TempArray[STATUS_INDEX];
             if (ReturnStatus == OPERATION_SUCCEED)
             {
                 /* convert the return status of OPERATION_SUCCEED to STATUS_SUCCEED not to conflict with FALSE */
                 ReturnStatus = STATUS_SUCCEED;
                 /* Extract CardId , RxFrame [0xBD|Len|0x01|Status|UID(7 or 4bytes)|Type|Checksum]
                  * Len = Len of ([0x01|Status|UID(7 or 4bytes)|Type|Checksum]) = 4 + cardLength*/
-                if (SendData_ptr[CMD_LENGTH_INDEX] == CARD_LENGTH_OLD_VERSION + 4)
+                if (u8TempArray[CMD_LENGTH_INDEX] == CARD_LENGTH_OLD_VERSION + 4)
                 {
-                    EF_ArrayCopy (CardNumber_ptr, &SendData_ptr[RX_CARD_DATA_INDEX], CARD_LENGTH_OLD_VERSION );
+                    EF_ArrayCopy (CardNumber_ptr, &u8TempArray[RX_CARD_DATA_INDEX], CARD_LENGTH_OLD_VERSION );
                 }
-                else if  (SendData_ptr[CMD_LENGTH_INDEX] == CARD_LENGTH_NEW_VERSION + 4)
+                else if  (u8TempArray[CMD_LENGTH_INDEX] == CARD_LENGTH_NEW_VERSION + 4)
                 {
-                    EF_ArrayCopy (CardNumber_ptr, &SendData_ptr[RX_CARD_DATA_INDEX], CARD_LENGTH_NEW_VERSION );
+                    EF_ArrayCopy (CardNumber_ptr, &u8TempArray[RX_CARD_DATA_INDEX], CARD_LENGTH_NEW_VERSION );
                 }
                 else
                 {
                     ReturnStatus = FALSE;
                 }
                 /* Extract the Card Length */
-                *CardNumber_NoOFDigits = SendData_ptr[CMD_LENGTH_INDEX] - 4;
+                *CardNumber_NoOFDigits = u8TempArray[CMD_LENGTH_INDEX] - 4;
             }
         }
     }
@@ -362,10 +361,10 @@ U8_t EF_u8_RFID_GetCardNumber (U8_t* CardNumber_ptr ,U8_t* CardNumber_NoOFDigits
 *               - KeyA and KeyB are saved in the last block ( Block 3) .
 *               - Key A(Master Key :More Secured) and B (not Secured), the Default of them: "FF FF FF FF FF FF"
 ******************************************************************************/
-U8_t EF_u8_RFID_LoginSector (U8_t SectorNumber, KeyTypeEnum KeyType, U8_t* Key_6HexBytes_ptr )
+U8_t EF_u8_RFID_LoginSector (U8_t SectorNumber, KeyTypeEnum KeyType, U8_t* u8PointerToKey )
 {
     volatile U8_t ReturnStatus = 0;                          /* Get the Return Status of function in it */
-             U8_t SendData_ptr[LOGIN_SECTOR_DATA_LENGTH];    /* build data bytes in this array, (not all frame) */
+             U8_t SendData_ptr[LOGIN_SECTOR_DATA_LENGTH] = {0};    /* build data bytes in this array, (not all frame) */
 
     /* Send Frame: [0xBA|Len|0x02|Sector|Type|Key|Checksum]
      * Data : [Sector|Type|Key]
@@ -378,7 +377,7 @@ U8_t EF_u8_RFID_LoginSector (U8_t SectorNumber, KeyTypeEnum KeyType, U8_t* Key_6
         return FALSE;
     }
     /* Copy Key data to the Array */
-    EF_ArrayCopy(&SendData_ptr[2], Key_6HexBytes_ptr, LOGIN_SECTOR_DATA_LENGTH-2);
+    EF_ArrayCopy(&SendData_ptr[2], u8PointerToKey, LOGIN_SECTOR_DATA_LENGTH-2);
 
     /* Send the Frame  [0xBA|Len|0x02|Sector|Type|Key|Checksum] */
     ReturnStatus = EF_BOOLEAN_RFID_SendFrame (LOGIN_SECTOR_CMD, SendData_ptr, LOGIN_SECTOR_DATA_LENGTH);
@@ -424,7 +423,7 @@ U8_t EF_u8_RFID_LoginSector (U8_t SectorNumber, KeyTypeEnum KeyType, U8_t* Key_6
 U8_t EF_u8_RFID_UpdateMasterKey (U8_t SectorNumber , U8_t* KeyA_6HexBytes_ptr  )
 {
     volatile U8_t ReturnStatus = 0;                            /* Get the Return Status of function in it */
-             U8_t SendData_ptr[WRITE_MASTER_KEY_DATA_LENGTH] ; /* build data bytes in this array, (not all frame) */
+             U8_t SendData_ptr[WRITE_MASTER_KEY_DATA_LENGTH] = {0} ; /* build data bytes in this array, (not all frame) */
 
     /* Send Frame: [0xBA Len 0x07 Sector Key Checksum]*/
     SendData_ptr[0] = SectorNumber;
@@ -484,7 +483,7 @@ U8_t EF_u8_RFID_UpdateMasterKey (U8_t SectorNumber , U8_t* KeyA_6HexBytes_ptr  )
 U8_t EF_u8_RFID_UpdateAllKeys ( U8_t SectorNumber , U8_t* Key_A_6HexBytes_ptr , U8_t* Key_B_6HexBytes_ptr )
 {
     volatile U8_t ReturnStatus = 0;                      /* Get the Return Status of function in it */
-             U8_t SendData_ptr[UPDATE_KEYS_DATA_LENGTH]; /* build data bytes in this array, (not all frame) */
+             U8_t SendData_ptr[UPDATE_KEYS_DATA_LENGTH] = {0}; /* build data bytes in this array, (not all frame) */
 
      /* write in Block 3 this data:  [keyA(6Bytes)|08 77 8F 00|keyb(6Bytes)] */
      /* Insert KeyA in SendData_ptr */

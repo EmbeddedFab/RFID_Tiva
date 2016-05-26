@@ -44,6 +44,7 @@
 
 #define MAX_SEND_CMD_LENGTH             21
 #define MAX_RECEIVED_LENGTH             21
+#define MAX_CARD_FRAME_LENGTH           13
 #define MIN_RECEIVED_LENGTH             3
 
 /* Addresses in the Frame */
