@@ -1,0 +1,42 @@
+C:\Users\INSPIRON\Documents\Visual Studio 2008\Projects\Project1\serialtemplate\serialtemplate\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\INSPIRON\Documents\Visual Studio 2008\Projects\Project1\serialtemplate\serialtemplate\obj\Debug\serialtemplate.Form1.resources
+C:\Users\INSPIRON\Documents\Visual Studio 2008\Projects\Project1\serialtemplate\serialtemplate\obj\Debug\serialtemplate.Properties.Resources.resources
+C:\Users\INSPIRON\Documents\Visual Studio 2008\Projects\Project1\serialtemplate\serialtemplate\obj\Debug\serialtemplate.csproj.GenerateResource.Cache
+C:\Users\INSPIRON\Documents\Visual Studio 2008\Projects\Project1\serialtemplate\serialtemplate\bin\Debug\serialtemplate.exe
+C:\Users\INSPIRON\Documents\Visual Studio 2008\Projects\Project1\serialtemplate\serialtemplate\bin\Debug\serialtemplate.pdb
+C:\Users\INSPIRON\Documents\Visual Studio 2008\Projects\Project1\serialtemplate\serialtemplate\obj\Debug\serialtemplate.exe
+C:\Users\INSPIRON\Documents\Visual Studio 2008\Projects\Project1\serialtemplate\serialtemplate\obj\Debug\serialtemplate.pdb
+D:\backup mu doc\Visual Studio 2008\Projects\Project1\serialtemplate\serialtemplate\obj\Debug\serialtemplate.exe
+D:\backup mu doc\Visual Studio 2008\Projects\Project1\serialtemplate\serialtemplate\obj\Debug\serialtemplate.pdb
+D:\backup mu doc\Visual Studio 2008\Projects\Project1\serialtemplate\serialtemplate\obj\Debug\ResolveAssemblyReference.cache
+D:\backup mu doc\Visual Studio 2008\Projects\Project1\serialtemplate\serialtemplate\obj\Debug\serialtemplate.Form1.resources
+D:\backup mu doc\Visual Studio 2008\Projects\Project1\serialtemplate\serialtemplate\obj\Debug\serialtemplate.Properties.Resources.resources
+D:\backup mu doc\Visual Studio 2008\Projects\Project1\serialtemplate\serialtemplate\obj\Debug\serialtemplate.csproj.GenerateResource.Cache
+D:\backup mu doc\Visual Studio 2008\Projects\Project1\serialtemplate\serialtemplate\bin\Debug\serialtemplate.exe
+D:\backup mu doc\Visual Studio 2008\Projects\Project1\serialtemplate\serialtemplate\bin\Debug\serialtemplate.pdb
+C:\Users\INSPIRON\Desktop\serialtemplate\serialtemplate\obj\Debug\serialtemplate.exe
+C:\Users\INSPIRON\Desktop\serialtemplate\serialtemplate\obj\Debug\serialtemplate.pdb
+C:\Users\INSPIRON\Desktop\serialtemplate\serialtemplate\bin\Debug\serialtemplate.exe
+C:\Users\INSPIRON\Desktop\serialtemplate\serialtemplate\bin\Debug\serialtemplate.pdb
+C:\Users\INSPIRON\Desktop\serialtemplate\serialtemplate\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\INSPIRON\Desktop\serialtemplate\serialtemplate\obj\Debug\serialtemplate.Form1.resources
+C:\Users\INSPIRON\Desktop\serialtemplate\serialtemplate\obj\Debug\serialtemplate.Properties.Resources.resources
+C:\Users\INSPIRON\Desktop\serialtemplate\serialtemplate\obj\Debug\serialtemplate.csproj.GenerateResource.Cache
+C:\Users\INSPIRON\Desktop\โปรแกรม test\serialtemplate\serialtemplate\obj\Debug\serialtemplate.exe
+C:\Users\INSPIRON\Desktop\โปรแกรม test\serialtemplate\serialtemplate\obj\Debug\serialtemplate.pdb
+C:\Users\INSPIRON\Desktop\โปรแกรม test\serialtemplate\serialtemplate\bin\Debug\serialtemplate.exe
+C:\Users\INSPIRON\Desktop\โปรแกรม test\serialtemplate\serialtemplate\bin\Debug\serialtemplate.pdb
+C:\Users\INSPIRON\Desktop\โปรแกรม test\serialtemplate\serialtemplate\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\INSPIRON\Desktop\โปรแกรม test\serialtemplate\serialtemplate\obj\Debug\serialtemplate.Form1.resources
+C:\Users\INSPIRON\Desktop\โปรแกรม test\serialtemplate\serialtemplate\obj\Debug\serialtemplate.Properties.Resources.resources
+C:\Users\INSPIRON\Desktop\โปรแกรม test\serialtemplate\serialtemplate\obj\Debug\serialtemplate.csproj.GenerateResource.Cache
+C:\Users\INSPIRON\Desktop\โปรแกรม test\Mifare_stk\serialtemplate\obj\Debug\serialtemplate.exe
+C:\Users\INSPIRON\Desktop\โปรแกรม test\Mifare_stk\serialtemplate\obj\Debug\serialtemplate.pdb
+C:\Users\INSPIRON\Desktop\โปรแกรม test\Mifare_stk\serialtemplate\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\INSPIRON\Desktop\โปรแกรม test\Mifare_stk\serialtemplate\obj\Debug\serialtemplate.Form1.resources
+C:\Users\INSPIRON\Desktop\โปรแกรม test\Mifare_stk\serialtemplate\obj\Debug\serialtemplate.Properties.Resources.resources
+C:\Users\INSPIRON\Desktop\โปรแกรม test\Mifare_stk\serialtemplate\obj\Debug\serialtemplate.csproj.GenerateResource.Cache
+C:\Users\INSPIRON\Desktop\โปรแกรม test\Mifare_stk\serialtemplate\bin\Debug\serialtemplate.exe
+C:\Users\INSPIRON\Desktop\โปรแกรม test\Mifare_stk\serialtemplate\bin\Debug\serialtemplate.pdb
+C:\Users\INSPIRON\Desktop\ALL_RFID\GM500A\Mirefare_stk_project\Mifare_stk\serialtemplate\obj\Debug\serialtemplate.exe
+C:\Users\INSPIRON\Desktop\ALL_RFID\GM500A\Mirefare_stk_project\Mifare_stk\serialtemplate\obj\Debug\serialtemplate.pdb

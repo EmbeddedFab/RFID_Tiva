@@ -1,0 +1,131 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
+using System.IO.Ports;
+using System.IO;
+using System.Diagnostics;
+using System.Configuration;
+using System.Threading;
+
+
+namespace serialtemplate
+{
+    public partial class Form1 : Form
+    {
+        public delegate void InvokeDelegate();
+        int i = 0;
+        Int16 num = 1;
+        public Form1()
+        {
+            InitializeComponent();
+        }
+    private void serialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        {
+            // Declare Thread Function
+            recive_box.BeginInvoke(new InvokeDelegate(updateTextbox));
+        }
+
+        private void updateTextbox()
+        {
+           int[] rxbuf = new int[100];
+           Int32 get;
+           string xx;
+           
+               xx = serialPort.ReadExisting();
+               
+               recive_box.Text += xx;
+               if (xx == "END\r\n")
+               {
+                   textBox1.Text += Convert.ToString(num);
+                   textBox1.Text += "\r\n";
+                   textBox1.Text += DateTime.Now.ToLongTimeString;
+                   num++;
+                   
+               }
+            
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            string[] s = SerialPort.GetPortNames();
+            int i = 0;
+
+            baud_list.Items.Clear();
+            baud_list.Items.Add("1200");
+            baud_list.Items.Add("2400");
+            baud_list.Items.Add("4800");
+            baud_list.Items.Add("9600");
+            baud_list.Items.Add("19200");
+            baud_list.Items.Add("38400");
+            baud_list.Items.Add("57600");
+            baud_list.Items.Add("115200");
+            baud_list.Items.Add("230400");
+            baud_list.SelectedIndex = 3;
+            list_port.Items.Clear();
+            
+            foreach (string port in s)
+            {
+                list_port.Items.Add(s[i]);
+                i++;
+            }
+            list_port.SelectedIndex = 0;
+        }
+
+        private void con_dis_Click(object sender, EventArgs e)
+        {
+            con_dis.Text = "Disconnect";
+            if (list_port.Items.Count > 0) // If there are ports available
+            {
+                if (serialPort.IsOpen)
+                {
+                    serialPort.Close(); // Close port
+                    con_dis.Text = "Connect";
+                }
+                serialPort.BaudRate = int.Parse(baud_list.Text);
+                serialPort.DataBits = 8;
+                serialPort.Parity = (Parity)Enum.Parse(typeof(Parity), "None");
+                serialPort.StopBits = (StopBits)Enum.Parse(typeof(StopBits), "One");
+                serialPort.PortName = list_port.Text;
+                serialPort.Open();
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+           
+            int b,i;
+            char c;
+            byte[] x;
+            byte[] sBuf = new byte[4];
+            int sInput;
+            recive_box.Text = "";
+            b = 0x02;
+            c = Convert.ToChar(b);
+          
+            for (i = 0; i < 10; i++)
+            {
+                sInput = 0x30;
+                BitConverter.GetBytes(sInput).CopyTo(sBuf, 0);
+                //serialPort.Write(Convert.ToString(c));
+                serialPort.Write(sBuf, 0, 1);
+            }
+          //  serialPort.Write("test\r\n");
+              
+        }
+       
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (serialPort.IsOpen)
+            {
+                serialPort.Close();
+            }
+        }
+
+        
+    }
+}
