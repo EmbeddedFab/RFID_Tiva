@@ -38,7 +38,7 @@
 #include "driverlib/pin_map.h"
 #include "driverlib/debug.h"
 #include "inc/hw_gpio.h"
-#include "../ServiceLayer/std_types.h"
+#include "../UtilitiesLayer/std_types.h"
 
 /*********************************************************************
 * Function    : DIO_InitPort(U8_t PortName, U8_t Value);

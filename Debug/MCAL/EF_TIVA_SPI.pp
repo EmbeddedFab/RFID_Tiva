@@ -2,7 +2,7 @@
 
 MCAL/EF_TIVA_SPI.obj: ../MCAL/EF_TIVA_SPI.c
 MCAL/EF_TIVA_SPI.obj: ../MCAL/EF_TIVA_SPI.h
-MCAL/EF_TIVA_SPI.obj: ../MCAL/../ServiceLayer/std_types.h
+MCAL/EF_TIVA_SPI.obj: ../MCAL/../UtilitiesLayer/std_types.h
 MCAL/EF_TIVA_SPI.obj: C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/stdint.h
 MCAL/EF_TIVA_SPI.obj: C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/stdbool.h
 MCAL/EF_TIVA_SPI.obj: C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/yvals.h
@@ -34,7 +34,7 @@ MCAL/EF_TIVA_SPI.obj: ../MCAL/EF_TIVA_DIO_cfg.h
 
 ../MCAL/EF_TIVA_SPI.c: 
 ../MCAL/EF_TIVA_SPI.h: 
-../MCAL/../ServiceLayer/std_types.h: 
+../MCAL/../UtilitiesLayer/std_types.h: 
 C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/stdint.h: 
 C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/stdbool.h: 
 C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/yvals.h: 

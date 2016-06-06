@@ -15,12 +15,12 @@
 #include "driverlib/uart.h"
 #include "utils/uartstdio.h"
 #include <string.h>
-#include "ServiceLayer/std_types.h"
+#include "UtilitiesLayer/std_types.h"
 #include "MCAL/EF_SpechialTIMER.h"
 #include "MCAL/EF_TIVA_uart.h"
 #include "MCAL/EF_TIVA_DIO.h"
-#include "HAL/EF_RFID.h"
-#include "HAL/EF_RFID_cfg.h"
+#include "HAL/EF_SLM025M.h"
+#include "HAL/EF_SLM025M_cfg.h"
 
 static void void_InitConsole(void)
 {
@@ -56,68 +56,63 @@ int main(void)
     void_InitConsole();
 
     EF_void_TimerInit();
-    EF_void_RFID_Init ();
+    EF_void_SLM025M_Init ();
 
-    ReturnStatus = EF_u8_RFID_RedLedOn ();
+    ReturnStatus = EF_u8_SLM025M_RedLedOn ();
     UARTprintf(" %d \n" , ReturnStatus );
     _delay_ms(500);
 
-    ReturnStatus = EF_u8_RFID_RedLedOff ();
+    ReturnStatus = EF_u8_SLM025M_RedLedOff ();
     UARTprintf(" %d \n" , ReturnStatus );
     _delay_ms(500);
 
 
     if (EF_S8_DIO_CheckPin (DETECT_CARD_PORT , DETECT_CARD_PIN) == CARD_IS_DETECTED)
     {
-        ReturnStatus = EF_u8_RFID_LoginSector (10 , KEY_TYPE_B,  Key_B_6HexBytes);
+        ReturnStatus = EF_u8_SLM025M_LoginSector (10 , KEY_TYPE_B,  Key_B_6HexBytes_ptr);
         UARTprintf("login: %d \n" , ReturnStatus );
-        if (ReturnStatus == LOGIN_SUCCEED)
+        if (ReturnStatus == SL025_LOGIN_SUCCEED)
         {
-            ReturnStatus =EF_u8_RFID_UpdateMasterKey (10 , Key_A_6HexBytes_ptr  );
-//            ReturnStatus = EF_u8_RFID_UpdateAllKeys ( 10 , Key_A_6HexBytes_ptr , Key_B_6HexBytes_ptr );
+            ReturnStatus =EF_u8_SLM025M_UpdateMasterKey (10 , Key_A_6HexBytes_ptr  );
+            ReturnStatus = EF_u8_SLM025M_UpdateAllKeys ( 10 , Key_A_6HexBytes_ptr , Key_B_6HexBytes_ptr );
 
             UARTprintf("key status: %d \n" , ReturnStatus );
         }
     }
-//
-while (1)
-{
 
-}
 
     while (1)
     {
         if (EF_S8_DIO_CheckPin (DETECT_CARD_PORT , DETECT_CARD_PIN) == CARD_IS_DETECTED)
         {
-            ReturnStatus = EF_u8_RFID_LoginSector (10 , KEY_TYPE_B,  Key_B_6HexBytes);
+            ReturnStatus = EF_u8_SLM025M_LoginSector (10 , KEY_TYPE_B,  Key_B_6HexBytes);
             UARTprintf("login: %d \n" , ReturnStatus );
 
-            if (ReturnStatus == LOGIN_SUCCEED)
+            if (ReturnStatus == SL025_LOGIN_SUCCEED)
             {
-                ReturnStatus =EF_u8_RFID_ReadDataBlock (10, 1,  DataPtr_16HexBytes  );
+                ReturnStatus = EF_u8_SLM025M_ReadDataBlock (10, 1,  DataPtr_16HexBytes  );
                 UARTprintf("BLock 1 , Read: %d \n" , ReturnStatus );
 
-                ReturnStatus = EF_u8_RFID_UpdateAllKeys ( 10 , Key_A_6HexBytes_ptr , Key_B_6HexBytes_ptr );
+                ReturnStatus = EF_u8_SLM025M_UpdateAllKeys ( 10 , Key_A_6HexBytes_ptr , Key_B_6HexBytes_ptr );
                 UARTprintf("  %d \n" , ReturnStatus );
 
-                ReturnStatus =EF_u8_RFID_WriteDataValue (10 , 1, DataPtr_4HexBytes  );
+                ReturnStatus = EF_u8_SLM025M_WriteDataValue (10 , 1, DataPtr_4HexBytes  );
                 UARTprintf("write value in block 1, status: %d \n" , ReturnStatus );
 
-                ReturnStatus =EF_u8_RFID_ReadDataValue (10 , 2, DataPtr_4HexBytes  );
+                ReturnStatus = EF_u8_SLM025M_ReadDataValue (10 , 2, DataPtr_4HexBytes  );
                 UARTprintf("read data value, status: %d \n" , ReturnStatus );
 
-                ReturnStatus =EF_u8_RFID_ReadDataValue (10 , 0, DataPtr_4HexBytes  );
+                ReturnStatus = EF_u8_SLM025M_ReadDataValue (10 , 0, DataPtr_4HexBytes  );
                 UARTprintf("read data value, status: %d \n" , ReturnStatus );
 
-                ReturnStatus =EF_u8_RFID_ReadDataBlock (10, 1,  DataPtr_16HexBytes  );
+                ReturnStatus = EF_u8_SLM025M_ReadDataBlock (10, 1,  DataPtr_16HexBytes  );
                 UARTprintf("BLock 0 , Read: %d \n" , ReturnStatus );
-//
-                ReturnStatus =EF_u8_RFID_ReadDataBlock (10, 0,  DataPtr_16HexBytes  );
+
+                ReturnStatus = EF_u8_SLM025M_ReadDataBlock (10, 0,  DataPtr_16HexBytes  );
                 UARTprintf("BLock 0 , Read: %d \n" , ReturnStatus );
-//
-                ReturnStatus =EF_u8_RFID_WriteDataBlock (10 , 1, DataPtr_16HexBytes  );
+
+                ReturnStatus = EF_u8_SLM025M_WriteDataBlock (10 , 1, DataPtr_16HexBytes  );
                 UARTprintf("write in block 1 from 0 , status: %d \n" , ReturnStatus );
-
             }
         }
         _delay_ms(1000);
@@ -127,11 +122,11 @@ while (1)
     {
         if (EF_S8_DIO_CheckPin (DETECT_CARD_PORT , DETECT_CARD_PIN) == CARD_IS_DETECTED)
         {
-            ReturnStatus = EF_u8_RFID_GetCardNumber(CardNumber_ptr , &CardNumber_NoOfDigits);
+            ReturnStatus = EF_u8_SLM025M_GetCardNumber(CardNumber_ptr , &CardNumber_NoOfDigits);
 
 
 
-            if (ReturnStatus == STATUS_SUCCEED)
+            if (ReturnStatus == SL025_STATUS_SUCCEED)
             {
                 for (index = 0; index < (CardNumber_NoOfDigits ) ; index++ )
                 {
@@ -143,7 +138,7 @@ while (1)
             {
                 UARTprintf("ERROR\n");
             }
-            else if (ReturnStatus == NOT_FOUND_FRAME )
+            else if (ReturnStatus == SL025_NOT_FOUND_FRAME )
             {
                 UARTprintf("Not Found\n");
 
@@ -158,9 +153,9 @@ while (1)
 //    {
 //        if (EF_S8_DIO_CheckPin (DETECT_CARD_PORT , DETECT_CARD_PIN) == _FALSE)
 //        {
-//            EF_BOOLEAN_RFID_SendFrame (SELECT_MIFARE_CARD_CMD, Data_ptr, 0);
+//            EF_BOOLEAN_SLM025M_SendFrame (SELECT_MIFARE_CARD_CMD, Data_ptr, 0);
 //
-//            ReturnStatus = EF_u8_RFID_ReceiveFrame (Data_ptr);
+//            ReturnStatus = EF_u8_SLM025M_ReceiveFrame (Data_ptr);
 //            if (ReturnStatus == TRUE)
 //            {
 //

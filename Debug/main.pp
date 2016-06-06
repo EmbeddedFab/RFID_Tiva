@@ -23,7 +23,7 @@ main.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/uart.h
 main.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/utils/uartstdio.h
 main.obj: C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/stdarg.h
 main.obj: C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/string.h
-main.obj: ../ServiceLayer/std_types.h
+main.obj: ../UtilitiesLayer/std_types.h
 main.obj: ../MCAL/EF_SpechialTIMER.h
 main.obj: ../MCAL/../MCAL/EF_SpechialTIMER_cfg.h
 main.obj: ../MCAL/../MCAL/EF_TIVA_Timer.h
@@ -37,8 +37,8 @@ main.obj: C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/Platform_Types.h
 main.obj: C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/Compiler.h
 main.obj: C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/Compiler_Cfg.h
 main.obj: ../MCAL/EF_TIVA_DIO_cfg.h
-main.obj: ../HAL/EF_RFID.h
-main.obj: ../HAL/EF_RFID_cfg.h
+main.obj: ../HAL/EF_SLM025M.h
+main.obj: ../HAL/EF_SLM025M_cfg.h
 
 ../main.c: 
 C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/stdint.h: 
@@ -63,7 +63,7 @@ C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/uart.h:
 C:/TI/TivaWare_C_Series-2.1.0.12573/utils/uartstdio.h: 
 C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/stdarg.h: 
 C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/string.h: 
-../ServiceLayer/std_types.h: 
+../UtilitiesLayer/std_types.h: 
 ../MCAL/EF_SpechialTIMER.h: 
 ../MCAL/../MCAL/EF_SpechialTIMER_cfg.h: 
 ../MCAL/../MCAL/EF_TIVA_Timer.h: 
@@ -77,5 +77,5 @@ C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/Platform_Types.h:
 C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/Compiler.h: 
 C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/Compiler_Cfg.h: 
 ../MCAL/EF_TIVA_DIO_cfg.h: 
-../HAL/EF_RFID.h: 
-../HAL/EF_RFID_cfg.h: 
+../HAL/EF_SLM025M.h: 
+../HAL/EF_SLM025M_cfg.h: 

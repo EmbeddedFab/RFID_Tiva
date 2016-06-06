@@ -4,21 +4,21 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../ServiceLayer/EF_RFID.c 
+../UtilitiesLayer/std_types.c 
 
 OBJS += \
-./ServiceLayer/EF_RFID.obj 
+./UtilitiesLayer/std_types.obj 
 
 C_DEPS += \
-./ServiceLayer/EF_RFID.pp 
+./UtilitiesLayer/std_types.pp 
 
 C_DEPS__QUOTED += \
-"ServiceLayer\EF_RFID.pp" 
+"UtilitiesLayer\std_types.pp" 
 
 OBJS__QUOTED += \
-"ServiceLayer\EF_RFID.obj" 
+"UtilitiesLayer\std_types.obj" 
 
 C_SRCS__QUOTED += \
-"../ServiceLayer/EF_RFID.c" 
+"../UtilitiesLayer/std_types.c" 
 
 

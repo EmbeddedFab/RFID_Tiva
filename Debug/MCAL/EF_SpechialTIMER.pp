@@ -3,7 +3,7 @@
 MCAL/EF_SpechialTIMER.obj: ../MCAL/EF_SpechialTIMER.c
 MCAL/EF_SpechialTIMER.obj: ../MCAL/../MCAL/EF_SpechialTIMER.h
 MCAL/EF_SpechialTIMER.obj: ../MCAL/../MCAL/../MCAL/EF_SpechialTIMER_cfg.h
-MCAL/EF_SpechialTIMER.obj: ../MCAL/../MCAL/../MCAL/../ServiceLayer/std_types.h
+MCAL/EF_SpechialTIMER.obj: ../MCAL/../MCAL/../MCAL/../UtilitiesLayer/std_types.h
 MCAL/EF_SpechialTIMER.obj: ../MCAL/../MCAL/../MCAL/EF_TIVA_Timer.h
 MCAL/EF_SpechialTIMER.obj: ../MCAL/../MCAL/../MCAL/EF_TIVA_Timer_cfg.h
 MCAL/EF_SpechialTIMER.obj: C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/stdint.h
@@ -26,7 +26,7 @@ MCAL/EF_SpechialTIMER.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/debug.h
 ../MCAL/EF_SpechialTIMER.c: 
 ../MCAL/../MCAL/EF_SpechialTIMER.h: 
 ../MCAL/../MCAL/../MCAL/EF_SpechialTIMER_cfg.h: 
-../MCAL/../MCAL/../MCAL/../ServiceLayer/std_types.h: 
+../MCAL/../MCAL/../MCAL/../UtilitiesLayer/std_types.h: 
 ../MCAL/../MCAL/../MCAL/EF_TIVA_Timer.h: 
 ../MCAL/../MCAL/../MCAL/EF_TIVA_Timer_cfg.h: 
 C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/stdint.h: 

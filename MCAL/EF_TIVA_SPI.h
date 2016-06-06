@@ -26,7 +26,7 @@
  **************************************************************/
 #ifndef _EF_TIVA_SPI_H_
 #define _EF_TIVA_SPI_H_
-#include "../ServiceLayer/std_types.h"
+#include "../UtilitiesLayer/std_types.h"
 
 typedef enum{
     MASTER_TYPE=0,

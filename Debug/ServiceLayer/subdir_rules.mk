@@ -3,10 +3,10 @@
 ################################################################################
 
 # Each subdirectory must supply rules for building sources it contributes
-ServiceLayer/std_types.obj: ../ServiceLayer/std_types.c $(GEN_OPTS) $(GEN_HDRS)
+ServiceLayer/EF_RFID.obj: ../ServiceLayer/EF_RFID.c $(GEN_OPTS) $(GEN_HDRS)
 	@echo 'Building file: $<'
 	@echo 'Invoking: ARM Compiler'
-	"C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include" --include_path="C:/TI/TivaWare_C_Series-2.1.0.12573" -g --gcc --define=ccs="ccs" --define=TARGET_IS_BLIZZARD_RB1 --define=PART_TM4C123GH6PM --display_error_number --diag_warning=225 --diag_wrap=off --preproc_with_compile --preproc_dependency="ServiceLayer/std_types.pp" --obj_directory="ServiceLayer" $(GEN_OPTS__FLAG) "$<"
+	"C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 --abi=eabi -me --include_path="C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include" --include_path="C:/TI/TivaWare_C_Series-2.1.0.12573" -g --gcc --define=ccs="ccs" --define=TARGET_IS_BLIZZARD_RB1 --define=PART_TM4C123GH6PM --display_error_number --diag_warning=225 --diag_wrap=off --preproc_with_compile --preproc_dependency="ServiceLayer/EF_RFID.pp" --obj_directory="ServiceLayer" $(GEN_OPTS__FLAG) "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

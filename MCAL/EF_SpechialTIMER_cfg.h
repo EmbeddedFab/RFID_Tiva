@@ -16,7 +16,7 @@
 #ifndef OS_TIMER_CFG_H_
 #define OS_TIMER_CFG_H_
 
-#include "../ServiceLayer/std_types.h"
+#include "../UtilitiesLayer/std_types.h"
 #include "EF_TIVA_Timer.h"
 /**************************************************
  * predifine variables

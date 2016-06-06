@@ -4,21 +4,21 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../HAL/EF_RFID.c 
+../HAL/EF_SLM025M.c 
 
 OBJS += \
-./HAL/EF_RFID.obj 
+./HAL/EF_SLM025M.obj 
 
 C_DEPS += \
-./HAL/EF_RFID.pp 
+./HAL/EF_SLM025M.pp 
 
 C_DEPS__QUOTED += \
-"HAL\EF_RFID.pp" 
+"HAL\EF_SLM025M.pp" 
 
 OBJS__QUOTED += \
-"HAL\EF_RFID.obj" 
+"HAL\EF_SLM025M.obj" 
 
 C_SRCS__QUOTED += \
-"../HAL/EF_RFID.c" 
+"../HAL/EF_SLM025M.c" 
 
 

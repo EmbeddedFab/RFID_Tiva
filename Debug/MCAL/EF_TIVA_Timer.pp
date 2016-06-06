@@ -19,7 +19,7 @@ MCAL/EF_TIVA_Timer.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/timer.h
 MCAL/EF_TIVA_Timer.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/pin_map.h
 MCAL/EF_TIVA_Timer.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/inc/hw_gpio.h
 MCAL/EF_TIVA_Timer.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/debug.h
-MCAL/EF_TIVA_Timer.obj: ../MCAL/../ServiceLayer/std_types.h
+MCAL/EF_TIVA_Timer.obj: ../MCAL/../UtilitiesLayer/std_types.h
 
 ../MCAL/EF_TIVA_Timer.c: 
 ../MCAL/EF_TIVA_Timer.h: 
@@ -40,4 +40,4 @@ C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/timer.h:
 C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/pin_map.h: 
 C:/TI/TivaWare_C_Series-2.1.0.12573/inc/hw_gpio.h: 
 C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/debug.h: 
-../MCAL/../ServiceLayer/std_types.h: 
+../MCAL/../UtilitiesLayer/std_types.h: 

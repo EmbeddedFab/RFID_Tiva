@@ -20,7 +20,7 @@ MCAL/EF_TIVA_DIO.obj: ../MCAL/EF_TIVA_DIO_cfg.h
 MCAL/EF_TIVA_DIO.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/pin_map.h
 MCAL/EF_TIVA_DIO.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/debug.h
 MCAL/EF_TIVA_DIO.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/inc/hw_gpio.h
-MCAL/EF_TIVA_DIO.obj: ../MCAL/../ServiceLayer/std_types.h
+MCAL/EF_TIVA_DIO.obj: ../MCAL/../UtilitiesLayer/std_types.h
 
 ../MCAL/EF_TIVA_DIO.c: 
 ../MCAL/EF_TIVA_DIO.h: 
@@ -42,4 +42,4 @@ C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/Compiler_Cfg.h:
 C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/pin_map.h: 
 C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/debug.h: 
 C:/TI/TivaWare_C_Series-2.1.0.12573/inc/hw_gpio.h: 
-../MCAL/../ServiceLayer/std_types.h: 
+../MCAL/../UtilitiesLayer/std_types.h: 

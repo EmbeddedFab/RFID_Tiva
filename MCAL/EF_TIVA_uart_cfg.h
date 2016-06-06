@@ -44,7 +44,7 @@
 #include "inc/hw_ints.h"
 #include "inc/hw_uart.h"
 #include "../MCAL/EF_SpechialTIMER.h"
-#include "../ServiceLayer/std_types.h"
+#include "../UtilitiesLayer/std_types.h"
 
 /**************************************************
  * Predefine variables

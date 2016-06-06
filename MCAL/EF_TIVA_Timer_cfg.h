@@ -40,7 +40,7 @@
 #include "driverlib/pin_map.h"
 #include "inc/hw_gpio.h"
 #include "driverlib/debug.h"
-#include "../ServiceLayer/std_types.h"
+#include "../UtilitiesLayer/std_types.h"
 
 #define SYS_CLOCK_TIMER  		SYSCTL_PERIPH_WTIMER0
 #define TIMER_BASE_ADD 			WTIMER0_BASE

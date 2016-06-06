@@ -109,6 +109,7 @@ S64_DEPS__QUOTED :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 . \
+UtilitiesLayer \
 ServiceLayer \
 RFID_Reference/Mifare_stk_programGUI/serialtemplate/obj/Debug \
 RFID_Reference/Mifare_stk_programGUI/serialtemplate/bin/Debug \

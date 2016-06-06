@@ -1,5 +1,5 @@
 /***************************************************************
- *  Source File: EF_RFID.c
+ *  Source File: EF_SLM025M.c
  *
  *  Description:  RFID Module SLM025M  driver
  *
@@ -42,14 +42,14 @@
 #include "driverlib/uart.h"
 #include "utils/uartstdio.h"
 #include <string.h>
-#include "../ServiceLayer/std_types.h"
+#include "../UtilitiesLayer/std_types.h"
 #include "../MCAL/EF_TIVA_DIO.h"
 #include "../MCAL/EF_TIVA_uart.h"
-#include "EF_RFID.h"
-#include "EF_RFID_cfg.h"
+#include "EF_SLM025M.h"
+#include "EF_SLM025M_cfg.h"
 
-#define UART_RFID       UART5
-UART_cfg_str  uart_cfg = {UART_RFID, 9600, NUMBER_OF_BITS_8, ONE_STOP_BIT, NO_PARITY, FALSE, FALSE, TRUE, TRUE};
+#define UART_SLM025M       UART5
+UART_cfg_str  uart_cfg = {UART_SLM025M, 9600, NUMBER_OF_BITS_8, ONE_STOP_BIT, NO_PARITY, FALSE, FALSE, TRUE, TRUE};
 
 /***************************************************************************
  ************************* Local Functions *********************************
@@ -84,7 +84,7 @@ static U8_t Calc_CheckSum(U8_t * Frame_ptr, U8_t DataLength)
 
 
 /****************************************************************************
-* Function    : UpdateCmdLenght(U8_t CMD)
+* Function    : UpdateCmdLenght ( U8_t CMD )
 *
 * DESCRIPTION : get the Command length for the given command,it was the length of: [Command|Data(if found)|Checksum]
 *
@@ -135,7 +135,7 @@ static U8_t UpdateCmdLenght(U8_t CMD)
         break;
 
     default:
-        CMD_LENGTH = WRONG_CMD;
+        CMD_LENGTH = SL025_WRONG_CMD;
         break;
     }
     return CMD_LENGTH;
@@ -143,9 +143,9 @@ static U8_t UpdateCmdLenght(U8_t CMD)
 
 
 /****************************************************************************
-* Function    : EF_BOOLEAN_RFID_SendFrame (U8_t CMD, U8_t * Data_ptr, U8_t DataLength)
+* Function    : EF_BOOLEAN_SLM025M_SendFrame (U8_t CMD, U8_t * Data_ptr, U8_t DataLength)
 *
-* DESCRIPTION : Send Frame to RFID card via Uart. Frame structure: [Preamble|Len|Command|Data(if found)|Checksum]
+* DESCRIPTION : Send Frame to SLM025M card via Uart. Frame structure: [Preamble|Len|Command|Data(if found)|Checksum]
 *
 * PARAMETERS  : CMD         : Command Number.
 *               Data_ptr    : Pointer to wanted data to be Send
@@ -154,19 +154,19 @@ static U8_t UpdateCmdLenght(U8_t CMD)
 * Return Value: 0x01: TRUE
 *               0x00: FALSE if Command is wrong.
 ******************************************************************************/
-static BOOLEAN EF_BOOLEAN_RFID_SendFrame (U8_t CMD, U8_t * Data_ptr, U8_t DataLength)
+static BOOLEAN EF_BOOLEAN_SLM025M_SendFrame (U8_t CMD, U8_t * Data_ptr, U8_t DataLength)
 {
     U8_t Index         = 0;                  /* iterator */
     U8_t CMDLength     = 0;                  /* to get the Wanted Len in it */
     U8_t FrameCheckSum = 0;                  /* to calculate the checksum in it */
-    U8_t command_array[MAX_SEND_CMD_LENGTH]; /* build frame in this array, (we can used Data_ptr only, it helps in Seeing the bytes in Debugging) */
+    U8_t command_array[MAX_SEND_CMD_LENGTH] = {0}; /* build frame in this array, (we can used Data_ptr only, it helps in Seeing the bytes in Debugging) */
 
     /* Frame structure: [Preamble|Len|Command|Data(if found)|Checksum] */
     command_array[PREAMBLE_INDEX]   = HOST_SL025_PREAMBLE;
 
     /* get Command Length = len of [Command|Data(if found)|Checksum]. And check it then add it in frame */
     CMDLength       = UpdateCmdLenght(CMD);
-    if (CMDLength == WRONG_CMD)
+    if ( (CMDLength == SL025_WRONG_CMD)  ||  (Data_ptr == NULL) )
     {
         return FALSE;
     }
@@ -193,7 +193,7 @@ static BOOLEAN EF_BOOLEAN_RFID_SendFrame (U8_t CMD, U8_t * Data_ptr, U8_t DataLe
     //todo or not ?
     EF_void_UART_Init(&uart_cfg);
     /* Length of frame = CMDLength + 2 bytes(Preamble+Len) */
-    EF_void_UART_SendArray( UART_RFID , command_array, (CMDLength + 2));
+    EF_void_UART_SendArray( UART_SLM025M , command_array, (CMDLength + 2));
 
 #if VIRTUAL_UART_DEBUGG
     UARTprintf("\n");
@@ -210,9 +210,9 @@ static BOOLEAN EF_BOOLEAN_RFID_SendFrame (U8_t CMD, U8_t * Data_ptr, U8_t DataLe
 
 
 /****************************************************************************
-* Function    : EF_u8_RFID_ReceiveFrame (U8_t * RxData_ptr )
+* Function    : EF_u8_SLM025M_ReceiveFrame (U8_t * RxData_ptr )
 *
-* DESCRIPTION : Receive Frame from RFID card via Uart. Rx Frame structure: [Preamble|Len|Command|Status|Data(if found)|Checksum]
+* DESCRIPTION : Receive Frame from SLM025M card via Uart. Rx Frame structure: [Preamble|Len|Command|Status|Data(if found)|Checksum]
 *
 * PARAMETERS  : Data_ptr : Pointer to Receiving Data
 *
@@ -222,30 +222,36 @@ static BOOLEAN EF_BOOLEAN_RFID_SendFrame (U8_t CMD, U8_t * Data_ptr, U8_t DataLe
 *
 * NOTE        : you should Send Frame first then Get the Response
 ******************************************************************************/
-static U8_t EF_u8_RFID_ReceiveFrame (U8_t * RxData_ptr )
+static U8_t EF_u8_SLM025M_ReceiveFrame (U8_t * RxData_ptr )
 {
     BOOLEAN b_ReturnStatus = 0;     /* Get the Return Status of function in it */
-       U8_t command_array[MAX_SEND_CMD_LENGTH]; /* build frame in this array, (we can used Data_ptr only, it helps in Seeing the bytes in Debugging) */
+    U8_t command_array[MAX_SEND_CMD_LENGTH] = {0}; /* build frame in this array, (we can used Data_ptr only, it helps in Seeing the bytes in Debugging) */
+
+    if (RxData_ptr == NULL)
+    {
+        return FALSE;
+    }
 
     /* Rx Frame structure: [Preamble|Len|Command|Status|Data(if found)|Checksum]*/
     /* Get the Preample */
-    EF_BOOLEAN_UART_GetChar( UART_RFID, &command_array[PREAMBLE_INDEX] );
+    EF_BOOLEAN_UART_GetChar( UART_SLM025M, &command_array[PREAMBLE_INDEX] );
     /* if Preample was rigth, get the Frame ,else Return NOT_FOUND_FRAME */
     if(SL025_HOST_PREAMBLE == command_array[PREAMBLE_INDEX])
     {
         /* Get the Len */
-        b_ReturnStatus = EF_BOOLEAN_UART_GetChar( UART_RFID, &command_array[CMD_LENGTH_INDEX] );
+        b_ReturnStatus = EF_BOOLEAN_UART_GetChar( UART_SLM025M, &command_array[CMD_LENGTH_INDEX] );
         if( (command_array[CMD_LENGTH_INDEX] >= MIN_RECEIVED_LENGTH) && (b_ReturnStatus == TRUE) )
         {
             /* Get the last bytes in the Frame */
-            b_ReturnStatus = EF_BOOLEAN_UART_GetArrayByLength(UART_RFID , command_array, command_array[CMD_LENGTH_INDEX]);
+            b_ReturnStatus = EF_BOOLEAN_UART_GetArrayByLength(UART_SLM025M , command_array, command_array[CMD_LENGTH_INDEX]);
             /* Copy frame to command_array */
             EF_ArrayCopy (RxData_ptr, command_array, (command_array[CMD_LENGTH_INDEX] + 2)  );
 
 #if VIRTUAL_UART_DEBUGG
+            U8_t index = 0;
             UARTprintf("\n");
             UARTprintf("RX Array is :  \"");
-            for (index = 0; index < (RxData_ptr[CMD_LENGTH_INDEX] + 2) ; index++ )
+            for ( index = 0; index < (RxData_ptr[CMD_LENGTH_INDEX] + 2) ; index++ )
             {
                 UARTprintf("%X " , (int)*(RxData_ptr + index) );
             }
@@ -255,7 +261,7 @@ static U8_t EF_u8_RFID_ReceiveFrame (U8_t * RxData_ptr )
     }
     else
     {
-        b_ReturnStatus = NOT_FOUND_FRAME;
+        b_ReturnStatus = SL025_NOT_FOUND_FRAME;
     }
     return b_ReturnStatus;
 }
@@ -265,15 +271,15 @@ static U8_t EF_u8_RFID_ReceiveFrame (U8_t * RxData_ptr )
  ***************************************************************************/
 
 /****************************************************************************
-* Function    : EF_void_RFID_Init ();
+* Function    : EF_void_SLM025M_Init ();
 *
-* DESCRIPTION : init the Uart For RFID Module SLM025M and init Card detected Pin
+* DESCRIPTION : init the Uart For SLM025M Module SLM025M and init Card detected Pin
 *
 * PARAMETERS  : None.
 *
 * Return Value: None.
 ******************************************************************************/
-void EF_void_RFID_Init ()
+void EF_void_SLM025M_Init ()
 {
     EF_void_UART_Init(&uart_cfg);
     /* Init the Detect card pin */
@@ -282,12 +288,12 @@ void EF_void_RFID_Init ()
 }
 
 /****************************************************************************
-* Function    : EF_u8_RFID_GetCardNumber (U8_t* CardNumber_ptr ,U8_t* CardNumber_NoOFDigits);
+* Function    : EF_u8_SLM025M_GetCardNumber (U8_t* CardNumber_ptr ,U8_t* u8CardLength_ptr);
 *
 * DESCRIPTION : Get Card Number with it's length.
 *
 * PARAMETERS  : CardNumber_ptr        : Pointer to the Return CardNumber.
-*               CardNumber_NoOFDigits : Pointer to Card Length, the old standard is 4 bytes and the new is 7bytes.
+*               u8CardLength_ptr : Pointer to Card Length, the old standard is 4 bytes and the new is 7bytes.
 *
 * Return Value: 0xFF: STATUS_SUCCEED
 *               0x01: NO_TAG
@@ -295,26 +301,30 @@ void EF_void_RFID_Init ()
 *               0x00: FALSE
 *               0xEF: NOT_FOUND_FRAME
 *******************************************************************************/
-U8_t EF_u8_RFID_GetCardNumber (U8_t* CardNumber_ptr ,U8_t* CardNumber_NoOFDigits)
+U8_t EF_u8_SLM025M_GetCardNumber (U8_t* CardNumber_ptr ,U8_t* u8CardLength_ptr)
 {
     volatile U8_t ReturnStatus = 0;
     U8_t u8TempArray[MAX_CARD_FRAME_LENGTH] ;    /* build data bytes in this array, (not all frame) */
 
+    if ((CardNumber_ptr == NULL) || (u8CardLength_ptr == NULL ))
+    {
+        return FALSE;
+    }
     /* Send Frame: [0xBA Len 0x01 Checksum] */
-    ReturnStatus = EF_BOOLEAN_RFID_SendFrame (SELECT_MIFARE_CARD_CMD, NULL, 0);
+    ReturnStatus = EF_BOOLEAN_SLM025M_SendFrame (SELECT_MIFARE_CARD_CMD, NULL, 0);
 
     if (ReturnStatus == TRUE)
     {
         /* Get the Response Frame : [0xBD|Len|0x01|Status|UID|Type|Checksum] */
-        ReturnStatus = EF_u8_RFID_ReceiveFrame (u8TempArray);
+        ReturnStatus = EF_u8_SLM025M_ReceiveFrame (u8TempArray);
         if (ReturnStatus == TRUE)
         {
             /* Get the Status from the Rx Frame */
             ReturnStatus = u8TempArray[STATUS_INDEX];
-            if (ReturnStatus == OPERATION_SUCCEED)
+            if (ReturnStatus == SL025_OPERATION_SUCCEED)
             {
                 /* convert the return status of OPERATION_SUCCEED to STATUS_SUCCEED not to conflict with FALSE */
-                ReturnStatus = STATUS_SUCCEED;
+                ReturnStatus = SL025_STATUS_SUCCEED;
                 /* Extract CardId , RxFrame [0xBD|Len|0x01|Status|UID(7 or 4bytes)|Type|Checksum]
                  * Len = Len of ([0x01|Status|UID(7 or 4bytes)|Type|Checksum]) = 4 + cardLength*/
                 if (u8TempArray[CMD_LENGTH_INDEX] == CARD_LENGTH_OLD_VERSION + 4)
@@ -330,7 +340,7 @@ U8_t EF_u8_RFID_GetCardNumber (U8_t* CardNumber_ptr ,U8_t* CardNumber_NoOFDigits
                     ReturnStatus = FALSE;
                 }
                 /* Extract the Card Length */
-                *CardNumber_NoOFDigits = u8TempArray[CMD_LENGTH_INDEX] - 4;
+                *u8CardLength_ptr = u8TempArray[CMD_LENGTH_INDEX] - 4;
             }
         }
     }
@@ -340,7 +350,22 @@ U8_t EF_u8_RFID_GetCardNumber (U8_t* CardNumber_ptr ,U8_t* CardNumber_NoOFDigits
 
 
 /****************************************************************************
-* Function    : EF_u8_RFID_LoginSector (U8_t SectorNumber, KeyTypeEnum KeyType, U8_t* Key_6HexBytes_ptr  );
+* Function    : EF_u8_SLM025M_IsCardExist ();
+*
+* DESCRIPTION : check if RFID see a card inside it.
+*
+* PARAMETERS  : None.
+*
+* Return Value: 0x00: CARD_IS_DETECTED
+*               0x01: CARD_IS_NOT_DETECTED
+*******************************************************************************/
+U8_t EF_u8_SLM025M_IsCardExist ()
+{
+    return (EF_S8_DIO_CheckPin (DETECT_CARD_PORT , DETECT_CARD_PIN));
+}
+
+/****************************************************************************
+* Function    : EF_u8_SLM025M_LoginSector (U8_t SectorNumber, KeyTypeEnum KeyType, U8_t* u8Key_ptr  );
 *
 * DESCRIPTION : Get Card Number with it's length.
 *
@@ -348,20 +373,19 @@ U8_t EF_u8_RFID_GetCardNumber (U8_t* CardNumber_ptr ,U8_t* CardNumber_NoOFDigits
 *               KeyType          : define it was KeyA or KeyB take one of the KeyTypeEnum
 *               Key_6HexBytes_ptr: Pointer to Key (6 Bytes) to login via it.
 *
-* Return Value: 0xFF: STATUS_SUCCEED
+* Return Value: 0x02: SL025_LOGIN_SUCCEED
 *               0x01: NO_TAG
 *               0x03: LOGIN_FAIL
-*               0x08: ADD_OVERFLOW
 *               0xF0: CHECKSUM_ERROR
 *               0x00: FALSE
 *               0xEF: NOT_FOUND_FRAME
 *
-* NOTE        : - RFID has 16 sector(0 to 15), every Sector has 4 block and has it's Special and Seperate KeyA and KeyB.
+* NOTE        : - SLM025M has 16 sector(0 to 15), every Sector has 4 block and has it's Special and Seperate KeyA and KeyB.
 *               - Every Block has 16 bytes.
 *               - KeyA and KeyB are saved in the last block ( Block 3) .
 *               - Key A(Master Key :More Secured) and B (not Secured), the Default of them: "FF FF FF FF FF FF"
 ******************************************************************************/
-U8_t EF_u8_RFID_LoginSector (U8_t SectorNumber, KeyTypeEnum KeyType, U8_t* u8PointerToKey )
+U8_t EF_u8_SLM025M_LoginSector (U8_t SectorNumber, KeyTypeEnum KeyType, U8_t* u8Key_ptr )
 {
     volatile U8_t ReturnStatus = 0;                          /* Get the Return Status of function in it */
              U8_t SendData_ptr[LOGIN_SECTOR_DATA_LENGTH] = {0};    /* build data bytes in this array, (not all frame) */
@@ -372,20 +396,20 @@ U8_t EF_u8_RFID_LoginSector (U8_t SectorNumber, KeyTypeEnum KeyType, U8_t* u8Poi
     SendData_ptr[0] = SectorNumber;
     SendData_ptr[1] = KeyType;
     /* Check for KeyType and SectorNumber */
-    if ( (SectorNumber > MAX_SECTOR_NUMBER) || ( (KeyType !=KEY_TYPE_A) && (KeyType != KEY_TYPE_B) ))
+    if ( (u8Key_ptr == NULL)||(SectorNumber > SL025_MAX_SECTOR_NUMBER) || ( (KeyType !=KEY_TYPE_A) && (KeyType != KEY_TYPE_B) ))
     {
         return FALSE;
     }
     /* Copy Key data to the Array */
-    EF_ArrayCopy(&SendData_ptr[2], u8PointerToKey, LOGIN_SECTOR_DATA_LENGTH-2);
+    EF_ArrayCopy(&SendData_ptr[2], u8Key_ptr, LOGIN_SECTOR_DATA_LENGTH-2);
 
     /* Send the Frame  [0xBA|Len|0x02|Sector|Type|Key|Checksum] */
-    ReturnStatus = EF_BOOLEAN_RFID_SendFrame (LOGIN_SECTOR_CMD, SendData_ptr, LOGIN_SECTOR_DATA_LENGTH);
+    ReturnStatus = EF_BOOLEAN_SLM025M_SendFrame (LOGIN_SECTOR_CMD, SendData_ptr, LOGIN_SECTOR_DATA_LENGTH);
 
     if (ReturnStatus == TRUE)
     {
         /* Get the Response Frame */
-        ReturnStatus = EF_u8_RFID_ReceiveFrame (SendData_ptr);
+        ReturnStatus = EF_u8_SLM025M_ReceiveFrame (SendData_ptr);
         if (ReturnStatus == TRUE)
         {
             /* Get the Status from the Rx Frame */
@@ -398,7 +422,7 @@ U8_t EF_u8_RFID_LoginSector (U8_t SectorNumber, KeyTypeEnum KeyType, U8_t* u8Poi
 
 
 /****************************************************************************
-* Function    : EF_u8_RFID_UpdateMasterKey (U8_t SectorNumber , U8_t* KeyA_6HexBytes  );
+* Function    : EF_u8_SLM025M_UpdateMasterKey (U8_t SectorNumber , U8_t* u8KeyA_ptr  );
 *
 * DESCRIPTION : Update Master Key (A).
 *
@@ -420,36 +444,36 @@ U8_t EF_u8_RFID_LoginSector (U8_t SectorNumber, KeyTypeEnum KeyType, U8_t* u8Poi
 *                   . Key A will be used to read block or Value and Can't be used for write Block or value or Update Master Key
 *                   . if you want to write block/value/MasterKey , use KeyB.
 ******************************************************************************/
-U8_t EF_u8_RFID_UpdateMasterKey (U8_t SectorNumber , U8_t* KeyA_6HexBytes_ptr  )
+U8_t EF_u8_SLM025M_UpdateMasterKey (U8_t SectorNumber , U8_t* u8KeyA_ptr  )
 {
     volatile U8_t ReturnStatus = 0;                            /* Get the Return Status of function in it */
              U8_t SendData_ptr[WRITE_MASTER_KEY_DATA_LENGTH] = {0} ; /* build data bytes in this array, (not all frame) */
 
     /* Send Frame: [0xBA Len 0x07 Sector Key Checksum]*/
     SendData_ptr[0] = SectorNumber;
-    /* Check for KeyType and SectorNumber */
-    if ( SectorNumber > MAX_SECTOR_NUMBER )
+    /* Check for u8KeyA_ptr and SectorNumber */
+    if ( (SectorNumber > SL025_MAX_SECTOR_NUMBER) ||  (u8KeyA_ptr == NULL) )
     {
         return FALSE;
     }
     /* Copy Key data to the Frame */
-    EF_ArrayCopy(&SendData_ptr[1], KeyA_6HexBytes_ptr, WRITE_MASTER_KEY_DATA_LENGTH-1);
+    EF_ArrayCopy(&SendData_ptr[1], u8KeyA_ptr, WRITE_MASTER_KEY_DATA_LENGTH-1);
 
     /* Send the Frame [0xBA Len 0x07 Sector Key Checksum] */
-    ReturnStatus = EF_BOOLEAN_RFID_SendFrame (WRITE_MASTER_KEY_CMD, SendData_ptr, WRITE_MASTER_KEY_DATA_LENGTH);
+    ReturnStatus = EF_BOOLEAN_SLM025M_SendFrame (WRITE_MASTER_KEY_CMD, SendData_ptr, WRITE_MASTER_KEY_DATA_LENGTH);
 
     if (ReturnStatus == TRUE)
     {
         /* Get the Response Frame */
-        ReturnStatus = EF_u8_RFID_ReceiveFrame (SendData_ptr);
+        ReturnStatus = EF_u8_SLM025M_ReceiveFrame (SendData_ptr);
         if (ReturnStatus == TRUE)
         {
             /* Get the Status from the Rx Frame [0xBD Len 0x07 Status Key Checksum]*/
             ReturnStatus = SendData_ptr[STATUS_INDEX];
             /* convert the return status of OPERATION_SUCCEED to STATUS_SUCCEED not to conflict with FALSE */
-            if (ReturnStatus == OPERATION_SUCCEED)
+            if (ReturnStatus == SL025_OPERATION_SUCCEED)
             {
-                ReturnStatus = STATUS_SUCCEED;
+                ReturnStatus = SL025_STATUS_SUCCEED;
             }
         }
     }
@@ -458,7 +482,7 @@ U8_t EF_u8_RFID_UpdateMasterKey (U8_t SectorNumber , U8_t* KeyA_6HexBytes_ptr  )
 
 
 /****************************************************************************
-* Function    : EF_u8_RFID_UpdateAllKeys ( U8_t SectorNumber , U8_t* Key_A_6HexBytes , U8_t* Key_B_6HexBytes );
+* Function    : EF_u8_SLM025M_UpdateAllKeys ( U8_t SectorNumber , U8_t* u8KeyA_ptr , U8_t* u8KeyB_ptr );
 *
 * DESCRIPTION : Update All Keys (A) and (B) for Defined Sector as every Sector has it's Own Keys.
 *
@@ -480,14 +504,20 @@ U8_t EF_u8_RFID_UpdateMasterKey (U8_t SectorNumber , U8_t* KeyA_6HexBytes_ptr  )
 *               - if this Operation Ok, Key A and KeyB changed and needed to login again with new Keys
 *               - if you read block 3 again KeyA and KeyB will return 0
 ******************************************************************************/
-U8_t EF_u8_RFID_UpdateAllKeys ( U8_t SectorNumber , U8_t* Key_A_6HexBytes_ptr , U8_t* Key_B_6HexBytes_ptr )
+U8_t EF_u8_SLM025M_UpdateAllKeys ( U8_t SectorNumber , U8_t* u8KeyA_ptr , U8_t* u8KeyB_ptr )
 {
     volatile U8_t ReturnStatus = 0;                      /* Get the Return Status of function in it */
              U8_t SendData_ptr[UPDATE_KEYS_DATA_LENGTH] = {0}; /* build data bytes in this array, (not all frame) */
 
+    /* Check for u8KeyA_ptr and SectorNumber */
+    if (  (u8KeyB_ptr == NULL)||  (u8KeyA_ptr == NULL) )
+    {
+        return FALSE;
+    }
+
      /* write in Block 3 this data:  [keyA(6Bytes)|08 77 8F 00|keyb(6Bytes)] */
      /* Insert KeyA in SendData_ptr */
-     EF_ArrayCopy(&SendData_ptr[0], Key_A_6HexBytes_ptr, KEY_LENGTH);
+     EF_ArrayCopy(&SendData_ptr[0], u8KeyA_ptr, KEY_LENGTH);
 
      /* ( 4 bits: Access Bits) , if writning to the Block 3 without this Access bits you may be unable to access this Sector again */
      SendData_ptr[6] = 0x08;
@@ -496,22 +526,22 @@ U8_t EF_u8_RFID_UpdateAllKeys ( U8_t SectorNumber , U8_t* Key_A_6HexBytes_ptr , 
      SendData_ptr[9] = 0x00;
 
      /* Insert KeyB in SendData_ptr */
-     EF_ArrayCopy(&SendData_ptr[10], Key_B_6HexBytes_ptr, KEY_LENGTH);
+     EF_ArrayCopy(&SendData_ptr[10], u8KeyB_ptr, KEY_LENGTH);
 
-     ReturnStatus = EF_u8_RFID_WriteDataBlock (SectorNumber, 3 , SendData_ptr);
+     ReturnStatus = EF_u8_SLM025M_WriteDataBlock (SectorNumber, 3 , SendData_ptr);
 
      return ReturnStatus;
 }
 
 
 /****************************************************************************
-* Function    : EF_u8_RFID_WriteDataBlock (U8_t SectorNumber , U8_t BlockNumber, U8_t* DataPtr_16HexBytes  );
+* Function    : EF_u8_SLM025M_WriteDataBlock (U8_t SectorNumber , U8_t BlockNumber, U8_t* u8DataPtr  );
 *
 * DESCRIPTION : Write Data Block (16 bytes) in Defined Sector in defined Block.
 *
 * PARAMETERS  : SectorNumber      : Number of Sector from 0 to 15.
 *               BlockNumber       : Block Number from 0 to 4.
-*               DataPtr_16HexBytes: Pointer to Wanted data to be Written  (16 bytes).
+*               u8DataPtr: Pointer to Wanted data to be Written  (16 bytes).
 *
 * Return Value: 0xFF: STATUS_SUCCEED
 *               0x01: NO_TAG
@@ -525,13 +555,13 @@ U8_t EF_u8_RFID_UpdateAllKeys ( U8_t SectorNumber , U8_t* Key_A_6HexBytes_ptr , 
 * NOTE        : - you should Login to the Wanted Sector Before this Function.
 *               - Every Block has 16 bytes.
 ******************************************************************************/
-U8_t EF_u8_RFID_WriteDataBlock (U8_t SectorNumber , U8_t BlockNumber, U8_t* DataPtr_16HexBytes  )
+U8_t EF_u8_SLM025M_WriteDataBlock (U8_t SectorNumber , U8_t BlockNumber, U8_t* u8DataPtr  )
 {
     volatile U8_t ReturnStatus = 0;                      /* Get the Return Status of function in it */
-             U8_t SendData_ptr[WRITE_BLOCK_DATA_LENGTH]; /* build data bytes in this array, (not all frame) */
+             U8_t SendData_ptr[WRITE_BLOCK_DATA_LENGTH] = {0}; /* build data bytes in this array, (not all frame) */
 
      /* Check for BlockNumber and SectorNumber */
-     if ( (SectorNumber > MAX_SECTOR_NUMBER) || (BlockNumber > MAX_BLOCK_NUMBER ) )
+     if ( (SectorNumber > SL025_MAX_SECTOR_NUMBER) || (BlockNumber > MAX_BLOCK_NUMBER )||  (u8DataPtr == NULL) )
      {
          return FALSE;
      }
@@ -540,23 +570,23 @@ U8_t EF_u8_RFID_WriteDataBlock (U8_t SectorNumber , U8_t BlockNumber, U8_t* Data
      BlockNumber = ( SectorNumber * 4 ) + BlockNumber;
      /* Send Frame: [0xBA Len 0x04 Block Data Checksum]*/
      SendData_ptr[0] = BlockNumber;
-     EF_ArrayCopy(&SendData_ptr[1], DataPtr_16HexBytes, WRITE_BLOCK_DATA_LENGTH-1);
+     EF_ArrayCopy(&SendData_ptr[1], u8DataPtr, WRITE_BLOCK_DATA_LENGTH-1);
 
      /* Send the Frame */
-     ReturnStatus = EF_BOOLEAN_RFID_SendFrame (WRITE_DATA_BLOCK_CMD, SendData_ptr, WRITE_BLOCK_DATA_LENGTH);
+     ReturnStatus = EF_BOOLEAN_SLM025M_SendFrame (WRITE_DATA_BLOCK_CMD, SendData_ptr, WRITE_BLOCK_DATA_LENGTH);
 
      if (ReturnStatus == TRUE)
      {
          /* Get the Response Frame */
-         ReturnStatus = EF_u8_RFID_ReceiveFrame (SendData_ptr);
+         ReturnStatus = EF_u8_SLM025M_ReceiveFrame (SendData_ptr);
          if (ReturnStatus == TRUE)
          {
              /* Get the Status from the Rx Frame [0xBD Len 0x04 Status Data Checksum] */
              ReturnStatus = SendData_ptr[STATUS_INDEX];
              /* convert the return status of OPERATION_SUCCEED to STATUS_SUCCEED not to conflict with FALSE */
-             if (ReturnStatus == OPERATION_SUCCEED)
+             if (ReturnStatus == SL025_OPERATION_SUCCEED)
              {
-                 ReturnStatus = STATUS_SUCCEED;
+                 ReturnStatus = SL025_STATUS_SUCCEED;
              }
          }
      }
@@ -565,13 +595,13 @@ U8_t EF_u8_RFID_WriteDataBlock (U8_t SectorNumber , U8_t BlockNumber, U8_t* Data
 
 
 /****************************************************************************
-* Function    : EF_u8_RFID_WriteDataValue (U8_t SectorNumber , U8_t BlockNumber, U8_t* DataPtr_4HexBytes  );
+* Function    : EF_u8_SLM025M_WriteDataValue (U8_t SectorNumber , U8_t BlockNumber, U8_t* u8DataPtr  );
 *
 * DESCRIPTION : Write Data Value in Defined Sector in defined Block.
 *
 * PARAMETERS  : SectorNumber      : Number of Sector from 0 to 15.
 *               BlockNumber       : Block Number from 0 to 4.
-*               DataPtr_4HexBytes : Pointer to Wanted data to be Written (4 bytes).
+*               u8DataPtr : Pointer to Wanted data to be Written (4 bytes).
 *
 * Return Value: 0xFF: STATUS_SUCCEED
 *               0x01: NO_TAG
@@ -588,37 +618,37 @@ U8_t EF_u8_RFID_WriteDataBlock (U8_t SectorNumber , U8_t BlockNumber, U8_t* Data
 *               - Take Care: Block 3 has Key A in the First 6 bytes, you Will OverWrite on it if block3 is used.
 *               - if read a block then Write in this block after reading, it may return UNABLE_READ_AFTER_WRITE
 ******************************************************************************/
-U8_t EF_u8_RFID_WriteDataValue (U8_t SectorNumber , U8_t BlockNumber, U8_t* DataPtr_4HexBytes  )
+U8_t EF_u8_SLM025M_WriteDataValue (U8_t SectorNumber , U8_t BlockNumber, U8_t* u8DataPtr  )
 {
     volatile U8_t ReturnStatus = 0;                      /* Get the Return Status of function in it */
-             U8_t SendData_ptr[WRITE_VALUE_DATA_LENGTH]; /* build data bytes in this array, (not all frame) */
+             U8_t SendData_ptr[WRITE_VALUE_DATA_LENGTH] = {0}; /* build data bytes in this array, (not all frame) */
 
 
      /* Check for BlockNumber and SectorNumber */
-     if ( (SectorNumber > MAX_SECTOR_NUMBER) || (BlockNumber > MAX_BLOCK_NUMBER ) )
+     if ( (SectorNumber > SL025_MAX_SECTOR_NUMBER) || (BlockNumber > MAX_BLOCK_NUMBER ) ||  (u8DataPtr == NULL))
      {
          return FALSE;
      }
      BlockNumber = ( SectorNumber * 4 ) + BlockNumber;
      /* frame : [0xBA Len 0x04 Block Data Checksum]*/
      SendData_ptr[0] = BlockNumber;
-     EF_ArrayCopy(&SendData_ptr[1], DataPtr_4HexBytes, WRITE_VALUE_DATA_LENGTH-1);
+     EF_ArrayCopy(&SendData_ptr[1], u8DataPtr, WRITE_VALUE_DATA_LENGTH-1);
 
      /* Send Frame*/
-     ReturnStatus = EF_BOOLEAN_RFID_SendFrame (WRITE_DATA_VALUE_CMD, SendData_ptr, WRITE_VALUE_DATA_LENGTH);
+     ReturnStatus = EF_BOOLEAN_SLM025M_SendFrame (WRITE_DATA_VALUE_CMD, SendData_ptr, WRITE_VALUE_DATA_LENGTH);
 
      if (ReturnStatus == TRUE)
      {
          /* Get the Response Frame */
-         ReturnStatus = EF_u8_RFID_ReceiveFrame (SendData_ptr);
+         ReturnStatus = EF_u8_SLM025M_ReceiveFrame (SendData_ptr);
          if (ReturnStatus == TRUE)
          {
              /* Get the Status from the Rx Frame [0xBD Len 0x06 Status Value Checksum] */
              ReturnStatus = SendData_ptr[STATUS_INDEX];
              /* convert the return status of OPERATION_SUCCEED to STATUS_SUCCEED not to conflict with FALSE */
-             if (ReturnStatus == OPERATION_SUCCEED)
+             if (ReturnStatus == SL025_OPERATION_SUCCEED)
              {
-                 ReturnStatus = STATUS_SUCCEED;
+                 ReturnStatus = SL025_STATUS_SUCCEED;
              }
          }
      }
@@ -629,13 +659,13 @@ U8_t EF_u8_RFID_WriteDataValue (U8_t SectorNumber , U8_t BlockNumber, U8_t* Data
 
 
 /****************************************************************************
-* Function    : EF_u8_RFID_ReadDataBlock (U8_t SectorNumber , U8_t BlockNumber, U8_t* DataPtr_16HexBytes  );
+* Function    : EF_u8_SLM025M_ReadDataBlock (U8_t SectorNumber , U8_t BlockNumber, U8_t* u8DataPtr  );
 *
 * DESCRIPTION : Read Data Block in Defined Sector in defined Block.
 *
 * PARAMETERS  : SectorNumber       : Number of Sector from 0 to 15.
 *               BlockNumber        : Block Number from 0 to 4.
-*               DataPtr_16HexBytes : Pointer to Wanted data to be Written (4 bytes).
+*               u8DataPtr : Pointer to Wanted data to be Written (4 bytes).
 *
 * Return Value: 0xFF: STATUS_SUCCEED
 *               0x01: NO_TAG
@@ -650,13 +680,13 @@ U8_t EF_u8_RFID_WriteDataValue (U8_t SectorNumber , U8_t BlockNumber, U8_t* Data
 *                it will return zeros in Key A and return Default Values of Key B if it wasn't changed, if
 *                Key B was changed then it will return zeros in Key B.
 ******************************************************************************/
-U8_t EF_u8_RFID_ReadDataBlock (U8_t SectorNumber , U8_t BlockNumber, U8_t* DataPtr_16HexBytes)
+U8_t EF_u8_SLM025M_ReadDataBlock (U8_t SectorNumber , U8_t BlockNumber, U8_t* u8DataPtr)
 {
     volatile U8_t ReturnStatus = 0;                  /* Get the Return Status of function in it */
-             U8_t SendData_ptr[MAX_SEND_CMD_LENGTH]; /* build data bytes in this array, (not all frame) */
+             U8_t SendData_ptr[MAX_SEND_CMD_LENGTH] = {0}; /* build data bytes in this array, (not all frame) */
 
      /* Check for BlockNumber and SectorNumber */
-     if ( (SectorNumber > MAX_SECTOR_NUMBER) || (BlockNumber > MAX_BLOCK_NUMBER ) || (DataPtr_16HexBytes == (U8_t *)NULL) )
+     if ( (SectorNumber > SL025_MAX_SECTOR_NUMBER) || (BlockNumber > MAX_BLOCK_NUMBER ) || (u8DataPtr == NULL) )
      {
          return FALSE;
      }
@@ -664,23 +694,23 @@ U8_t EF_u8_RFID_ReadDataBlock (U8_t SectorNumber , U8_t BlockNumber, U8_t* DataP
      BlockNumber = ( SectorNumber * 4 ) + BlockNumber;
 
      /* Send Frame: [0xBA Len 0x03 Block Checksum]*/
-     ReturnStatus = EF_BOOLEAN_RFID_SendFrame (READ_DATA_BLOCK_CMD, &BlockNumber, READ_DATA_LENGTH);
+     ReturnStatus = EF_BOOLEAN_SLM025M_SendFrame (READ_DATA_BLOCK_CMD, &BlockNumber, READ_DATA_LENGTH);
 
      if (ReturnStatus == TRUE)
      {
          /* Get the Response Frame */
-         ReturnStatus = EF_u8_RFID_ReceiveFrame (SendData_ptr);
+         ReturnStatus = EF_u8_SLM025M_ReceiveFrame (SendData_ptr);
          if (ReturnStatus == TRUE)
          {
              /* RxFrame : [0xBD Len 0x04 Status Data Checksum]*/
-             EF_ArrayCopy(DataPtr_16HexBytes, (SendData_ptr + READ_DATA_INDEX), BLOCK_DATA_LENGTH);
+             EF_ArrayCopy(u8DataPtr, (SendData_ptr + READ_DATA_INDEX), BLOCK_DATA_LENGTH);
 
              /* Get the Status from the Rx Frame */
              ReturnStatus = SendData_ptr[STATUS_INDEX];
              /* convert the return status of OPERATION_SUCCEED to STATUS_SUCCEED not to conflict with FALSE */
-             if (ReturnStatus == OPERATION_SUCCEED)
+             if (ReturnStatus == SL025_OPERATION_SUCCEED)
              {
-                 ReturnStatus = STATUS_SUCCEED;
+                 ReturnStatus = SL025_STATUS_SUCCEED;
              }
          }
      }
@@ -691,13 +721,13 @@ U8_t EF_u8_RFID_ReadDataBlock (U8_t SectorNumber , U8_t BlockNumber, U8_t* DataP
 
 
 /****************************************************************************
-* Function    : EF_u8_RFID_ReadDataValue (U8_t SectorNumber , U8_t BlockNumber, U8_t* DataPtr_4HexBytes  );
+* Function    : EF_u8_SLM025M_ReadDataValue (U8_t SectorNumber , U8_t BlockNumber, U8_t* u8DataPtr  );
 *
 * DESCRIPTION : Read Data Value in Defined Sector in defined Block.
 *
 * PARAMETERS  : SectorNumber      : Number of Sector from 0 to 15.
 *               BlockNumber       : Block Number from 0 to 4.
-*               DataPtr_4HexBytes : Pointer to Wanted data to be Written (4 bytes).
+*               u8DataPtr : Pointer to Wanted data to be Written (4 bytes).
 *
 * Return Value: 0xFF: STATUS_SUCCEED
 *               0x01: NO_TAG
@@ -710,36 +740,36 @@ U8_t EF_u8_RFID_ReadDataBlock (U8_t SectorNumber , U8_t BlockNumber, U8_t* DataP
 * NOTE        : - you should Login to the Wanted Sector Before this Function.
 *               - Block 3 has Key A in the First 6 bytes, it will return zeros if read it.
 ******************************************************************************/
-U8_t EF_u8_RFID_ReadDataValue (U8_t SectorNumber , U8_t BlockNumber, U8_t* DataPtr_4HexBytes  )
+U8_t EF_u8_SLM025M_ReadDataValue (U8_t SectorNumber , U8_t BlockNumber, U8_t* u8DataPtr  )
 {
     volatile U8_t ReturnStatus = 0;                  /* Get the Return Status of function in it */
-             U8_t SendData_ptr[MAX_SEND_CMD_LENGTH]; /* build data bytes in this array, (not all frame) */
+             U8_t SendData_ptr[MAX_SEND_CMD_LENGTH] = {0}; /* build data bytes in this array, (not all frame) */
 
      /* Check for BlockNumber and SectorNumber */
-     if ( (SectorNumber > MAX_SECTOR_NUMBER) || (BlockNumber > MAX_BLOCK_NUMBER ) || (DataPtr_4HexBytes == (U8_t *)NULL) )
+     if ( (SectorNumber > SL025_MAX_SECTOR_NUMBER) || (BlockNumber > MAX_BLOCK_NUMBER ) || (u8DataPtr == (U8_t *)NULL) )
      {
          return FALSE;
      }
      BlockNumber = ( SectorNumber * 4 ) + BlockNumber;
 
      /* Send Frame: [0xBA Len 0x03 Block Checksum]*/
-     ReturnStatus = EF_BOOLEAN_RFID_SendFrame (READ_DATA_VALUE_CMD, &BlockNumber, READ_DATA_LENGTH);
+     ReturnStatus = EF_BOOLEAN_SLM025M_SendFrame (READ_DATA_VALUE_CMD, &BlockNumber, READ_DATA_LENGTH);
 
      if (ReturnStatus == TRUE)
      {
          /* Get the Response Frame */
-         ReturnStatus = EF_u8_RFID_ReceiveFrame (SendData_ptr);
+         ReturnStatus = EF_u8_SLM025M_ReceiveFrame (SendData_ptr);
          if (ReturnStatus == TRUE)
          {
              /* RxFrame : [0xBD Len 0x04 Status Data Checksum]*/
-             EF_ArrayCopy(DataPtr_4HexBytes, (SendData_ptr + READ_DATA_INDEX), VALUE_LENGTH);
+             EF_ArrayCopy(u8DataPtr, (SendData_ptr + READ_DATA_INDEX), VALUE_LENGTH);
 
              /* Get the Status from the Rx Frame [0xBD Len 0x05 Status Value Checksum] */
              ReturnStatus = SendData_ptr[STATUS_INDEX];
              /* convert the return status of OPERATION_SUCCEED to STATUS_SUCCEED not to conflict with FALSE */
-             if (ReturnStatus == OPERATION_SUCCEED)
+             if (ReturnStatus == SL025_OPERATION_SUCCEED)
              {
-                 ReturnStatus = STATUS_SUCCEED;
+                 ReturnStatus = SL025_STATUS_SUCCEED;
              }
          }
      }
@@ -748,9 +778,9 @@ U8_t EF_u8_RFID_ReadDataValue (U8_t SectorNumber , U8_t BlockNumber, U8_t* DataP
 }
 
 /****************************************************************************
-* Function    : EF_u8_RFID_RedLedOn ();
+* Function    : EF_u8_SLM025M_RedLedOn ();
 *
-* DESCRIPTION : Turn on the Red LEd on the RFID Card.
+* DESCRIPTION : Turn on the Red LEd on the SLM025M Card.
 *
 * PARAMETERS  : None.
 *
@@ -759,25 +789,25 @@ U8_t EF_u8_RFID_ReadDataValue (U8_t SectorNumber , U8_t BlockNumber, U8_t* DataP
 *               0x00: FALSE
 *               0xEF: NOT_FOUND_FRAME
 *******************************************************************************/
-U8_t EF_u8_RFID_RedLedOn ()
+U8_t EF_u8_SLM025M_RedLedOn ()
 {
     volatile U8_t ReturnStatus = 0;                  /* Get the Return Status of function in it */
              U8_t SendByte = RED_LED_ON_DATA;        /* Data byte to put in the Frame */
-             U8_t SendData_ptr[MAX_SEND_CMD_LENGTH]; /* build data bytes in this array, (not all frame) */
+             U8_t SendData_ptr[MAX_SEND_CMD_LENGTH] = {0}; /* build data bytes in this array, (not all frame) */
 
     /* Send Frame: [0xBA Len 0x40 Code Checksum] */
-    ReturnStatus = EF_BOOLEAN_RFID_SendFrame (MANAGE_RED_LED_CMD, &SendByte, LED_DATA_LENGTH);
+    ReturnStatus = EF_BOOLEAN_SLM025M_SendFrame (MANAGE_RED_LED_CMD, &SendByte, LED_DATA_LENGTH);
 
     if (ReturnStatus == TRUE)
     {
         /* Get the Response Frame [0xBD Len 0x40 Status Checksum] */
-        ReturnStatus = EF_u8_RFID_ReceiveFrame (SendData_ptr);
+        ReturnStatus = EF_u8_SLM025M_ReceiveFrame (SendData_ptr);
         if (ReturnStatus == TRUE)
         {
             /* convert the return status of OPERATION_SUCCEED to STATUS_SUCCEED not to conflict with FALSE */
-            if (ReturnStatus == OPERATION_SUCCEED)
+            if (ReturnStatus == SL025_OPERATION_SUCCEED)
             {
-                ReturnStatus = STATUS_SUCCEED;
+                ReturnStatus = SL025_STATUS_SUCCEED;
             }
         }
     }
@@ -786,9 +816,9 @@ U8_t EF_u8_RFID_RedLedOn ()
 }
 
 /****************************************************************************
-* Function    : EF_u8_RFID_RedLedOff ();
+* Function    : EF_u8_SLM025M_RedLedOff ();
 *
-* DESCRIPTION : Turn off the Red LEd on the RFID Card.
+* DESCRIPTION : Turn off the Red LEd on the SLM025M Card.
 *
 * PARAMETERS  : None.
 *
@@ -797,25 +827,25 @@ U8_t EF_u8_RFID_RedLedOn ()
 *               0x00: FALSE
 *               0xEF: NOT_FOUND_FRAME
 *******************************************************************************/
-U8_t EF_u8_RFID_RedLedOff ()
+U8_t EF_u8_SLM025M_RedLedOff ()
 {
     volatile U8_t ReturnStatus = 0;                  /* Get the Return Status of function in it */
              U8_t SendByte = RED_LED_OFF_DATA;       /* Data byte to put in the Frame */
-             U8_t SendData_ptr[MAX_SEND_CMD_LENGTH]; /* build data bytes in this array, (not all frame) */
+             U8_t SendData_ptr[MAX_SEND_CMD_LENGTH] = {0}; /* build data bytes in this array, (not all frame) */
 
     /* Send Frame: [0xBA Len 0x40 Code Checksum] */
-    ReturnStatus = EF_BOOLEAN_RFID_SendFrame (MANAGE_RED_LED_CMD, &SendByte, LED_DATA_LENGTH);
+    ReturnStatus = EF_BOOLEAN_SLM025M_SendFrame (MANAGE_RED_LED_CMD, &SendByte, LED_DATA_LENGTH);
 
     if (ReturnStatus == TRUE)
     {
         /* Get the Response Frame [0xBD Len 0x40 Status Checksum] */
-        ReturnStatus = EF_u8_RFID_ReceiveFrame (SendData_ptr);
+        ReturnStatus = EF_u8_SLM025M_ReceiveFrame (SendData_ptr);
         if (ReturnStatus == TRUE)
         {
             /* convert the return status of OPERATION_SUCCEED to STATUS_SUCCEED not to conflict with FALSE */
-            if (ReturnStatus == OPERATION_SUCCEED)
+            if (ReturnStatus == SL025_OPERATION_SUCCEED)
             {
-                ReturnStatus = STATUS_SUCCEED;
+                ReturnStatus = SL025_STATUS_SUCCEED;
             }
         }
     }

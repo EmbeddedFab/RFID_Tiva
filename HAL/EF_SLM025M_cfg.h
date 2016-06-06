@@ -28,7 +28,7 @@
 #define EF_SLM025M_CFG_H_
 
 
-#define VIRTUAL_UART_DEBUGG             0       /* Disable Virtual Uart Terminal when equals 0 */
+#define VIRTUAL_UART_DEBUGG             1       /* Disable Virtual Uart Terminal when equals 0 */
 
 #define HOST_SL025_PREAMBLE             0xBA    /* Preamble When Send Frame to RFID */
 #define SL025_HOST_PREAMBLE             0xBD    /* Preamble When Receive Frame from RFID */
@@ -72,7 +72,6 @@
 #define CARD_LENGTH_NEW_VERSION         7
 
 /* RFID Mifare 1k has 16 Sector(0 to 15), Every Sector has 4 Blocks(0 to 3) , Every Block has 16 bytes */
-#define MAX_SECTOR_NUMBER               15
 #define MAX_BLOCK_NUMBER                3
 
 /* Data to Led For Turn on or Off , inserted in the Frame */
@@ -99,28 +98,6 @@
 #define LOGIN_SECTOR_STORED_KEY_CMD     0x13
 #define MANAGE_RED_LED_CMD              0x40
 #define GET_FIRMWARE_VERSION            0xF0
-
-/*********************************************************
- ***************** Status Code  **************************
- *********************************************************/
-// Read status
-#define OPERATION_SUCCEED               0x00
-/* convert the return status of OPERATION_SUCCEED to STATUS_SUCCEED not to conflict with FALSE */
-#define STATUS_SUCCEED                  0xFF
-#define NO_TAG                          0x01
-#define LOGIN_SUCCEED                   0x02
-#define LOGIN_FAIL                      0x03
-#define READ_FAIL                       0x04
-#define WRITE_FAIL                      0x05
-#define UNABLE_READ_AFTER_WRITE         0x06
-#define READ_AFTER_WRITE_FAIL           0x07
-#define ADD_OVERFLOW                    0x08
-#define NOT_AUTHENTICATE                0x0D
-#define LOAD_KEY_FAIL                   0x0C
-#define CHECKSUM_ERROR                  0xF0
-#define COMMAND_CODE_ERROR              0xF1
-#define NOT_FOUND_FRAME                 0xEF
-#define WRONG_CMD                       0xEE
 
 
 /*********************************************************
