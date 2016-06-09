@@ -304,14 +304,15 @@ void EF_void_SLM025M_Init ()
 U8_t EF_u8_SLM025M_GetCardNumber (U8_t* CardNumber_ptr ,U8_t* u8CardLength_ptr)
 {
     volatile U8_t ReturnStatus = 0;
-    U8_t u8TempArray[MAX_CARD_FRAME_LENGTH] ;    /* build data bytes in this array, (not all frame) */
+             U8_t u8TempArray[MAX_CARD_FRAME_LENGTH] ;    /* build data bytes in this array, (not all frame) */
+             U8_t u8Data= 0;
 
     if ((CardNumber_ptr == NULL) || (u8CardLength_ptr == NULL ))
     {
         return FALSE;
     }
     /* Send Frame: [0xBA Len 0x01 Checksum] */
-    ReturnStatus = EF_BOOLEAN_SLM025M_SendFrame (SELECT_MIFARE_CARD_CMD, NULL, 0);
+    ReturnStatus = EF_BOOLEAN_SLM025M_SendFrame (SELECT_MIFARE_CARD_CMD, &u8Data, 0);
 
     if (ReturnStatus == TRUE)
     {

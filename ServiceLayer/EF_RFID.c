@@ -109,7 +109,7 @@ U8_t EF_u8_RFID_GetCardNumber (RFID_ModulesEnum ModuleType , U8_t* u8CardNumber_
 }
 
 
-U8_t EF_u8_RFID_PrepairCard (RFID_ModulesEnum ModuleType )
+U8_t EF_u8_RFID_PrepareCard (RFID_ModulesEnum ModuleType )
 {
     volatile U8_t ReturnStatus = 0;   /* Get the Return Status of function in it */
     volatile U8_t LoginStatus = 0;   /* Get the Return Status of function in it */
@@ -119,7 +119,7 @@ U8_t EF_u8_RFID_PrepairCard (RFID_ModulesEnum ModuleType )
     {
     case SLM025M_MODULE:
         /* Locking All not worked blocked by defined locked key */
-        while ((Iterator <= SL025_MAX_SECTOR_NUMBER) && (ReturnStatus == SL025_STATUS_SUCCEED) )
+        while ((Iterator <= SL025_MAX_SECTOR_NUMBER)  )
         {
             LoginStatus = EF_u8_SLM025M_LoginSector (Iterator , KEY_TYPE_B,  SL025_DefaultKey);
             if (LoginStatus == SL025_LOGIN_SUCCEED)
@@ -139,18 +139,16 @@ U8_t EF_u8_RFID_PrepairCard (RFID_ModulesEnum ModuleType )
                 Iterator++;
             }
         }
-        if  (ReturnStatus == SL025_STATUS_SUCCEED)
+        LoginStatus = EF_u8_SLM025M_LoginSector (SL025_WORKED_SECTOR , KEY_TYPE_B,  SL025_DefaultKey);
+        if (LoginStatus == SL025_LOGIN_SUCCEED)
         {
-            LoginStatus = EF_u8_SLM025M_LoginSector (SL025_WORKED_SECTOR , KEY_TYPE_B,  SL025_DefaultKey);
-            if (LoginStatus == SL025_LOGIN_SUCCEED)
-            {
-                ReturnStatus = EF_u8_SLM025M_UpdateAllKeys ( SL025_WORKED_SECTOR , SL025_WorkedKeyA , SL025_WorkedKeyB );
-            }
-            else
-            {
-                ReturnStatus = LoginStatus;
-            }
+            ReturnStatus = EF_u8_SLM025M_UpdateAllKeys ( SL025_WORKED_SECTOR , SL025_WorkedKeyA , SL025_WorkedKeyB );
         }
+        else
+        {
+            ReturnStatus = LoginStatus;
+        }
+
 
         break;
 
@@ -247,7 +245,7 @@ U8_t EF_u8_RFID_AddUserBalance (RFID_ModulesEnum ModuleType , U16_t u16Balance )
 
 
 
-U8_t EF_u8_RFID_SubtractUserBalance (RFID_ModulesEnum ModuleType , U16_t u16Balance )
+U8_t EF_u8_RFID_SubtractUserBalance (RFID_ModulesEnum ModuleType , U16_t u16SubtractedValue )
 {
     U8_t ReturnStatus = TRUE;   /* Get the Return Status of function in it */
     U16_t u16GetBalance = 0;
@@ -260,13 +258,13 @@ U8_t EF_u8_RFID_SubtractUserBalance (RFID_ModulesEnum ModuleType , U16_t u16Bala
             ReturnStatus = EF_u8_SLM025M_ReadDataValue (SL025_WORKED_SECTOR , SL025_WORKED_BLOCK, (U8_t*)&u16GetBalance);
             if (ReturnStatus == SL025_STATUS_SUCCEED)
             {
-                if (u16Balance > u16GetBalance)
+                if (u16SubtractedValue > u16GetBalance)
                 {
                     //todo zeroing ??
                     return BALANCE_LOW_CANNOT_SUB;
                 }
-                u16Balance = u16Balance - u16GetBalance;
-                ReturnStatus = EF_u8_SLM025M_WriteDataValue (SL025_WORKED_SECTOR , SL025_WORKED_BLOCK, (U8_t*)&u16Balance);
+                u16SubtractedValue = u16GetBalance - u16SubtractedValue;
+                ReturnStatus = EF_u8_SLM025M_WriteDataValue (SL025_WORKED_SECTOR , SL025_WORKED_BLOCK, (U8_t*)&u16SubtractedValue);
             }
         }
         break;
@@ -277,20 +275,4 @@ U8_t EF_u8_RFID_SubtractUserBalance (RFID_ModulesEnum ModuleType , U16_t u16Bala
     }
     return ReturnStatus;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

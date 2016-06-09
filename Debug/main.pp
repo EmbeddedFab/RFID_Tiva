@@ -39,6 +39,7 @@ main.obj: C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/Compiler_Cfg.h
 main.obj: ../MCAL/EF_TIVA_DIO_cfg.h
 main.obj: ../HAL/EF_SLM025M.h
 main.obj: ../HAL/EF_SLM025M_cfg.h
+main.obj: ../ServiceLayer/EF_RFID.h
 
 ../main.c: 
 C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/stdint.h: 
@@ -79,3 +80,4 @@ C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/Compiler_Cfg.h:
 ../MCAL/EF_TIVA_DIO_cfg.h: 
 ../HAL/EF_SLM025M.h: 
 ../HAL/EF_SLM025M_cfg.h: 
+../ServiceLayer/EF_RFID.h: 

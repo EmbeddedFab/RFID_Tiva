@@ -28,7 +28,7 @@
 #define EF_SLM025M_CFG_H_
 
 
-#define VIRTUAL_UART_DEBUGG             1       /* Disable Virtual Uart Terminal when equals 0 */
+#define VIRTUAL_UART_DEBUGG             0       /* Disable Virtual Uart Terminal when equals 0 */
 
 #define HOST_SL025_PREAMBLE             0xBA    /* Preamble When Send Frame to RFID */
 #define SL025_HOST_PREAMBLE             0xBD    /* Preamble When Receive Frame from RFID */

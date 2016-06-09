@@ -21,6 +21,12 @@
 #include "MCAL/EF_TIVA_DIO.h"
 #include "HAL/EF_SLM025M.h"
 #include "HAL/EF_SLM025M_cfg.h"
+#include "ServiceLayer/EF_RFID.h"
+
+
+#define SECTOR_MAX_COUNT                16
+#define BLOCK_MAX_COUNT                  3 /* To avoid writing on keys */
+#define BALANCE_SIZE                     4
 
 static void void_InitConsole(void)
 {
@@ -40,139 +46,148 @@ static void void_InitConsole(void)
 
 int main(void)
 {
-    U8_t CardNumber_ptr [7] ;
-    U8_t CardNumber_NoOfDigits ;
-    U8_t Key_6HexBytes_ptr[6] = {0xFF, 0xFF,0xFF ,0xFF,0xFF,0xFF} ;
-    U8_t DataPtr_16HexBytes[16];
-    U8_t DataPtr_4HexBytes[4]= {1, 2, 3 ,4} ;
-    U8_t Key_A_6HexBytes_ptr[6] = {1,2,3,4,5,6};
-    U8_t Key_B_6HexBytes_ptr[6] = {6, 5, 4, 3, 2, 1};
+    volatile U8_t u8ReturnStatus = 0;
+    U8_t        u8CardNumber_ptr [7];
+    U8_t        u8CardNumber_NoOfDigits;
+//    U8_t        u8Key_6HexBytes_ptr[6]   = {0xFF, 0xFF,0xFF ,0xFF,0xFF,0xFF} ;
+//    U8_t        u8DataPtr_16HexBytes[16] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+//    U8_t        u8DataRead[16];
+//    U8_t        u8DataPtr_4HexBytes[4]   = {1, 2, 3 ,4} ;
+//    U8_t        u8Key_A_6HexBytes_ptr[6] = {1,2,3,4,5,6};
+//    U8_t        u8Key_Default[6]         = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+//    U8_t        u8Key_B_6HexBytes_ptr[6] = {6, 5, 4, 3, 2, 1};
+//    U8_t        u8Key_B_6HexBytes[6]     = {0,0,0,0,0,0};
+    U8_t        u8index                  = 0;
+    U8_t        u8CardExistence        = CARD_IS_NOT_DETECTED;
+//    U8_t        u8SectorCount          = 0;
+//    U8_t        u8BlockNumber          = 0;
+    U8_t        u8UserBalance[4];
+    U8_t        u8BalanceElement       = 0;
+    U16_t       u16InsertedBalance     = 450;
+//    KeyTypeEnum eCardKey               = KEY_TYPE_A;
 
-    U8_t Key_B_6HexBytes[6] = {0,0,0,0,0,0};
 
-    volatile U8_t ReturnStatus = 0;
-    U8_t index = 0;
     SysCtlClockSet(SYSCTL_SYSDIV_4|SYSCTL_USE_PLL|SYSCTL_OSC_MAIN|SYSCTL_XTAL_16MHZ);
     void_InitConsole();
-
     EF_void_TimerInit();
-    EF_void_SLM025M_Init ();
+    EF_BOOLEAN_RFID_Init(SLM025M_MODULE);
 
-    ReturnStatus = EF_u8_SLM025M_RedLedOn ();
-    UARTprintf(" %d \n" , ReturnStatus );
-    _delay_ms(500);
+    UARTprintf(" Testing SLM025 \n");
 
-    ReturnStatus = EF_u8_SLM025M_RedLedOff ();
-    UARTprintf(" %d \n" , ReturnStatus );
-    _delay_ms(500);
-
-
-    if (EF_S8_DIO_CheckPin (DETECT_CARD_PORT , DETECT_CARD_PIN) == CARD_IS_DETECTED)
-    {
-        ReturnStatus = EF_u8_SLM025M_LoginSector (10 , KEY_TYPE_B,  Key_B_6HexBytes_ptr);
-        UARTprintf("login: %d \n" , ReturnStatus );
-        if (ReturnStatus == SL025_LOGIN_SUCCEED)
-        {
-            ReturnStatus =EF_u8_SLM025M_UpdateMasterKey (10 , Key_A_6HexBytes_ptr  );
-            ReturnStatus = EF_u8_SLM025M_UpdateAllKeys ( 10 , Key_A_6HexBytes_ptr , Key_B_6HexBytes_ptr );
-
-            UARTprintf("key status: %d \n" , ReturnStatus );
-        }
-    }
-
-
-    while (1)
-    {
-        if (EF_S8_DIO_CheckPin (DETECT_CARD_PORT , DETECT_CARD_PIN) == CARD_IS_DETECTED)
-        {
-            ReturnStatus = EF_u8_SLM025M_LoginSector (10 , KEY_TYPE_B,  Key_B_6HexBytes);
-            UARTprintf("login: %d \n" , ReturnStatus );
-
-            if (ReturnStatus == SL025_LOGIN_SUCCEED)
-            {
-                ReturnStatus = EF_u8_SLM025M_ReadDataBlock (10, 1,  DataPtr_16HexBytes  );
-                UARTprintf("BLock 1 , Read: %d \n" , ReturnStatus );
-
-                ReturnStatus = EF_u8_SLM025M_UpdateAllKeys ( 10 , Key_A_6HexBytes_ptr , Key_B_6HexBytes_ptr );
-                UARTprintf("  %d \n" , ReturnStatus );
-
-                ReturnStatus = EF_u8_SLM025M_WriteDataValue (10 , 1, DataPtr_4HexBytes  );
-                UARTprintf("write value in block 1, status: %d \n" , ReturnStatus );
-
-                ReturnStatus = EF_u8_SLM025M_ReadDataValue (10 , 2, DataPtr_4HexBytes  );
-                UARTprintf("read data value, status: %d \n" , ReturnStatus );
-
-                ReturnStatus = EF_u8_SLM025M_ReadDataValue (10 , 0, DataPtr_4HexBytes  );
-                UARTprintf("read data value, status: %d \n" , ReturnStatus );
-
-                ReturnStatus = EF_u8_SLM025M_ReadDataBlock (10, 1,  DataPtr_16HexBytes  );
-                UARTprintf("BLock 0 , Read: %d \n" , ReturnStatus );
-
-                ReturnStatus = EF_u8_SLM025M_ReadDataBlock (10, 0,  DataPtr_16HexBytes  );
-                UARTprintf("BLock 0 , Read: %d \n" , ReturnStatus );
-
-                ReturnStatus = EF_u8_SLM025M_WriteDataBlock (10 , 1, DataPtr_16HexBytes  );
-                UARTprintf("write in block 1 from 0 , status: %d \n" , ReturnStatus );
-            }
-        }
-        _delay_ms(1000);
-    }
-
-    while (1)
-    {
-        if (EF_S8_DIO_CheckPin (DETECT_CARD_PORT , DETECT_CARD_PIN) == CARD_IS_DETECTED)
-        {
-            ReturnStatus = EF_u8_SLM025M_GetCardNumber(CardNumber_ptr , &CardNumber_NoOfDigits);
-
-
-
-            if (ReturnStatus == SL025_STATUS_SUCCEED)
-            {
-                for (index = 0; index < (CardNumber_NoOfDigits ) ; index++ )
-                {
-                    UARTprintf("%X " , (int)*(CardNumber_ptr + index) );
-                }
-                UARTprintf("\n\n");
-            }
-            else if (ReturnStatus == FALSE)
-            {
-                UARTprintf("ERROR\n");
-            }
-            else if (ReturnStatus == SL025_NOT_FOUND_FRAME )
-            {
-                UARTprintf("Not Found\n");
-
-            }
-        }
-        _delay_ms(500);
-    }
-
-    ///////////////////
-
-//    while (1)
+//    u8CardExistence = EF_u8_RFID_IsCardExist(SLM025M_MODULE);
+//    if(u8CardExistence == CARD_IS_DETECTED)
 //    {
-//        if (EF_S8_DIO_CheckPin (DETECT_CARD_PORT , DETECT_CARD_PIN) == _FALSE)
-//        {
-//            EF_BOOLEAN_SLM025M_SendFrame (SELECT_MIFARE_CARD_CMD, Data_ptr, 0);
-//
-//            ReturnStatus = EF_u8_SLM025M_ReceiveFrame (Data_ptr);
-//            if (ReturnStatus == TRUE)
-//            {
-//
-//                //                UARTprintf("Rx: %s \n" , Data_ptr);
-//            }
-//            else if (ReturnStatus == _FALSE)
-//            {
-//                UARTprintf("ERROR\n");
-//            }
-//            else if (ReturnStatus == NOT_FOUND_FRAME )
-//            {
-//                UARTprintf("Not Found\n");
-//
-//            }
-//        }
-//        _delay_ms(500);
+//        UARTprintf("Card detected \n");
+//        EF_u8_RFID_PrepairCard(SLM025M_MODULE);
 //    }
+    u8CardExistence = EF_u8_RFID_IsCardExist(SLM025M_MODULE);
+    if(u8CardExistence == CARD_IS_DETECTED)
+    {
+        UARTprintf("Card detected \n");
+        UARTprintf("Updating balance \n");
+        u8ReturnStatus = EF_u8_RFID_UpdateUserBalance (SLM025M_MODULE, u16InsertedBalance);
+        if(u8ReturnStatus == SL025_STATUS_SUCCEED)
+        {
+            UARTprintf("Reading Balance \n");
+            u8ReturnStatus = EF_u8_RFID_GetUserBalance(SLM025M_MODULE, u8UserBalance);
+            UARTprintf("Balance retrieved = \n");
+            for (u8BalanceElement = 0; u8BalanceElement < BALANCE_SIZE; ++u8BalanceElement)
+            {
+                UARTprintf("%d, ", u8UserBalance[u8BalanceElement]);
+            }
+        }
+    }
+    else
+    {
+        UARTprintf("Card not detected \n");
+    }
+
+    u8CardExistence = EF_u8_RFID_IsCardExist(SLM025M_MODULE);
+    if(u8CardExistence == CARD_IS_DETECTED)
+    {
+        UARTprintf("Card detected \n");
+        UARTprintf("Incrementing Balance \n");
+        u8ReturnStatus = EF_u8_RFID_AddUserBalance(SLM025M_MODULE, 2);
+        if(u8ReturnStatus == SL025_STATUS_SUCCEED)
+        {
+            UARTprintf("Getting balance \n");
+            u8ReturnStatus = EF_u8_RFID_GetUserBalance(SLM025M_MODULE, u8UserBalance);
+            if(u8ReturnStatus == SL025_STATUS_SUCCEED)
+            {
+                UARTprintf("Balance retrieved = \n");
+                for (u8BalanceElement = 0; u8BalanceElement < BALANCE_SIZE; ++u8BalanceElement)
+                {
+                    UARTprintf("%d, ", u8UserBalance[u8BalanceElement]);
+                }
+            }
+        }
+    }
+    else
+    {
+        UARTprintf("Card not detected \n");
+    }
+
+    u8CardExistence = EF_u8_RFID_IsCardExist(SLM025M_MODULE);
+    if(u8CardExistence == CARD_IS_DETECTED)
+    {
+        UARTprintf("Card detected \n");
+        UARTprintf("decrementing Balance \n");
+        u8ReturnStatus = EF_u8_RFID_SubtractUserBalance(SLM025M_MODULE, 2);
+        if(u8ReturnStatus == SL025_STATUS_SUCCEED)
+        {
+            UARTprintf("Getting balance \n");
+            u8ReturnStatus = EF_u8_RFID_GetUserBalance(SLM025M_MODULE, u8UserBalance);
+            if(u8ReturnStatus == SL025_STATUS_SUCCEED)
+            {
+                UARTprintf("Balance retrieved = \n");
+                for (u8BalanceElement = 0; u8BalanceElement < BALANCE_SIZE; ++u8BalanceElement)
+                {
+                    UARTprintf("%d, ", u8UserBalance[u8BalanceElement]);
+                }
+            }
+        }
+    }
+    else
+    {
+        UARTprintf("Card not detected \n");
+    }
+
+
+    u8CardExistence = EF_u8_RFID_IsCardExist(SLM025M_MODULE);
+    if(u8CardExistence == CARD_IS_DETECTED)
+    {
+        UARTprintf("Card detected \n");
+        u8ReturnStatus = EF_u8_RFID_GetCardNumber(SLM025M_MODULE, u8CardNumber_ptr, &u8CardNumber_NoOfDigits);
+        if (u8ReturnStatus == SL025_STATUS_SUCCEED)
+        {
+            for (u8index = 0; u8index < (u8CardNumber_NoOfDigits ) ; u8index++ )
+            {
+                UARTprintf("%X " , (int)*(u8CardNumber_ptr + u8index) );
+            }
+            UARTprintf("\n\n");
+        }
+        else if (u8ReturnStatus == FALSE)
+        {
+            UARTprintf("ERROR\n");
+        }
+        else if (u8ReturnStatus == SL025_NOT_FOUND_FRAME )
+        {
+            UARTprintf("Not Found\n");
+
+        }
+    }
+    else
+    {
+        UARTprintf("Card not detected \n");
+    }
+    _delay_ms(200);
+
+
+    while(1)
+    {
+
+    }
+
 }
 
 

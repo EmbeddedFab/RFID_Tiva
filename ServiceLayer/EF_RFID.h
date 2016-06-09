@@ -40,7 +40,7 @@ U8_t EF_u8_RFID_IsCardExist (RFID_ModulesEnum ModuleType);
 
 U8_t EF_u8_RFID_GetCardNumber (RFID_ModulesEnum ModuleType , U8_t* u8CardNumber_ptr ,U8_t* u8CardLength_ptr  );
 
-U8_t EF_u8_RFID_PrepairCard (RFID_ModulesEnum ModuleType );
+U8_t EF_u8_RFID_PrepareCard (RFID_ModulesEnum ModuleType );
 
 U8_t EF_u8_RFID_GetUserBalance (RFID_ModulesEnum ModuleType , U8_t * u8Balance_ptr );
 
