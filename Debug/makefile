@@ -10,9 +10,9 @@ ORDERED_OBJS += \
 "./main.obj" \
 "./tm4c123gh6pm_startup_ccs.obj" \
 "./uartstdio.obj" \
+"./UtilitiesLayer/EF_SpechialTIMER.obj" \
 "./UtilitiesLayer/std_types.obj" \
 "./ServiceLayer/EF_RFID.obj" \
-"./MCAL/EF_SpechialTIMER.obj" \
 "./MCAL/EF_TIVA_DIO.obj" \
 "./MCAL/EF_TIVA_SPI.obj" \
 "./MCAL/EF_TIVA_Timer.obj" \
@@ -33,17 +33,11 @@ RMDIR := RMDIR /S/Q
 -include subdir_vars.mk
 -include UtilitiesLayer/subdir_vars.mk
 -include ServiceLayer/subdir_vars.mk
--include RFID_Reference/Mifare_stk_programGUI/serialtemplate/obj/Debug/subdir_vars.mk
--include RFID_Reference/Mifare_stk_programGUI/serialtemplate/bin/Debug/subdir_vars.mk
--include RFID_Reference/Mifare_stk_programGUI/subdir_vars.mk
 -include MCAL/subdir_vars.mk
 -include HAL/subdir_vars.mk
 -include subdir_rules.mk
 -include UtilitiesLayer/subdir_rules.mk
 -include ServiceLayer/subdir_rules.mk
--include RFID_Reference/Mifare_stk_programGUI/serialtemplate/obj/Debug/subdir_rules.mk
--include RFID_Reference/Mifare_stk_programGUI/serialtemplate/bin/Debug/subdir_rules.mk
--include RFID_Reference/Mifare_stk_programGUI/subdir_rules.mk
 -include MCAL/subdir_rules.mk
 -include HAL/subdir_rules.mk
 -include objects.mk
@@ -171,8 +165,8 @@ RFID_Tiva.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "main.pp" "tm4c123gh6pm_startup_ccs.pp" "uartstdio.pp" "UtilitiesLayer\std_types.pp" "ServiceLayer\EF_RFID.pp" "MCAL\EF_SpechialTIMER.pp" "MCAL\EF_TIVA_DIO.pp" "MCAL\EF_TIVA_SPI.pp" "MCAL\EF_TIVA_Timer.pp" "MCAL\EF_TIVA_uart.pp" "HAL\EF_SLM025M.pp" 
-	-$(RM) "main.obj" "tm4c123gh6pm_startup_ccs.obj" "uartstdio.obj" "UtilitiesLayer\std_types.obj" "ServiceLayer\EF_RFID.obj" "MCAL\EF_SpechialTIMER.obj" "MCAL\EF_TIVA_DIO.obj" "MCAL\EF_TIVA_SPI.obj" "MCAL\EF_TIVA_Timer.obj" "MCAL\EF_TIVA_uart.obj" "HAL\EF_SLM025M.obj" 
+	-$(RM) "main.pp" "tm4c123gh6pm_startup_ccs.pp" "uartstdio.pp" "UtilitiesLayer\EF_SpechialTIMER.pp" "UtilitiesLayer\std_types.pp" "ServiceLayer\EF_RFID.pp" "MCAL\EF_TIVA_DIO.pp" "MCAL\EF_TIVA_SPI.pp" "MCAL\EF_TIVA_Timer.pp" "MCAL\EF_TIVA_uart.pp" "HAL\EF_SLM025M.pp" 
+	-$(RM) "main.obj" "tm4c123gh6pm_startup_ccs.obj" "uartstdio.obj" "UtilitiesLayer\EF_SpechialTIMER.obj" "UtilitiesLayer\std_types.obj" "ServiceLayer\EF_RFID.obj" "MCAL\EF_TIVA_DIO.obj" "MCAL\EF_TIVA_SPI.obj" "MCAL\EF_TIVA_Timer.obj" "MCAL\EF_TIVA_uart.obj" "HAL\EF_SLM025M.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

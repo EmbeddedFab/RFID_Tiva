@@ -16,10 +16,10 @@ MCAL/EF_TIVA_SPI.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/ssi.h
 MCAL/EF_TIVA_SPI.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/gpio.h
 MCAL/EF_TIVA_SPI.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/pin_map.h
 MCAL/EF_TIVA_SPI.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/sysctl.h
-MCAL/EF_TIVA_SPI.obj: ../MCAL/EF_SpechialTIMER.h
-MCAL/EF_TIVA_SPI.obj: ../MCAL/../MCAL/EF_SpechialTIMER_cfg.h
-MCAL/EF_TIVA_SPI.obj: ../MCAL/../MCAL/EF_TIVA_Timer.h
-MCAL/EF_TIVA_SPI.obj: ../MCAL/../MCAL/EF_TIVA_Timer_cfg.h
+MCAL/EF_TIVA_SPI.obj: ../MCAL/../UtilitiesLayer/EF_SpechialTIMER.h
+MCAL/EF_TIVA_SPI.obj: ../MCAL/../UtilitiesLayer/EF_SpechialTIMER_cfg.h
+MCAL/EF_TIVA_SPI.obj: ../MCAL/../UtilitiesLayer/../MCAL/EF_TIVA_Timer.h
+MCAL/EF_TIVA_SPI.obj: ../MCAL/../UtilitiesLayer/../MCAL/EF_TIVA_Timer_cfg.h
 MCAL/EF_TIVA_SPI.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/inc/hw_ints.h
 MCAL/EF_TIVA_SPI.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/interrupt.h
 MCAL/EF_TIVA_SPI.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/timer.h
@@ -48,10 +48,10 @@ C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/ssi.h:
 C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/gpio.h: 
 C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/pin_map.h: 
 C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/sysctl.h: 
-../MCAL/EF_SpechialTIMER.h: 
-../MCAL/../MCAL/EF_SpechialTIMER_cfg.h: 
-../MCAL/../MCAL/EF_TIVA_Timer.h: 
-../MCAL/../MCAL/EF_TIVA_Timer_cfg.h: 
+../MCAL/../UtilitiesLayer/EF_SpechialTIMER.h: 
+../MCAL/../UtilitiesLayer/EF_SpechialTIMER_cfg.h: 
+../MCAL/../UtilitiesLayer/../MCAL/EF_TIVA_Timer.h: 
+../MCAL/../UtilitiesLayer/../MCAL/EF_TIVA_Timer_cfg.h: 
 C:/TI/TivaWare_C_Series-2.1.0.12573/inc/hw_ints.h: 
 C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/interrupt.h: 
 C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/timer.h: 

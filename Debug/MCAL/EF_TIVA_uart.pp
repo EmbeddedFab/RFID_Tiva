@@ -20,11 +20,11 @@ MCAL/EF_TIVA_uart.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/uart.h
 MCAL/EF_TIVA_uart.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/interrupt.h
 MCAL/EF_TIVA_uart.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/inc/hw_ints.h
 MCAL/EF_TIVA_uart.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/inc/hw_uart.h
-MCAL/EF_TIVA_uart.obj: ../MCAL/../MCAL/../MCAL/../MCAL/EF_SpechialTIMER.h
-MCAL/EF_TIVA_uart.obj: ../MCAL/../MCAL/../MCAL/../MCAL/../MCAL/EF_SpechialTIMER_cfg.h
-MCAL/EF_TIVA_uart.obj: ../MCAL/../MCAL/../MCAL/../MCAL/../MCAL/../UtilitiesLayer/std_types.h
-MCAL/EF_TIVA_uart.obj: ../MCAL/../MCAL/../MCAL/../MCAL/../MCAL/EF_TIVA_Timer.h
-MCAL/EF_TIVA_uart.obj: ../MCAL/../MCAL/../MCAL/../MCAL/../MCAL/EF_TIVA_Timer_cfg.h
+MCAL/EF_TIVA_uart.obj: ../MCAL/../MCAL/../MCAL/../UtilitiesLayer/EF_SpechialTIMER.h
+MCAL/EF_TIVA_uart.obj: ../MCAL/../MCAL/../MCAL/../UtilitiesLayer/EF_SpechialTIMER_cfg.h
+MCAL/EF_TIVA_uart.obj: ../MCAL/../MCAL/../MCAL/../UtilitiesLayer/std_types.h
+MCAL/EF_TIVA_uart.obj: ../MCAL/../MCAL/../MCAL/../UtilitiesLayer/../MCAL/EF_TIVA_Timer.h
+MCAL/EF_TIVA_uart.obj: ../MCAL/../MCAL/../MCAL/../UtilitiesLayer/../MCAL/EF_TIVA_Timer_cfg.h
 MCAL/EF_TIVA_uart.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/timer.h
 
 ../MCAL/EF_TIVA_uart.c: 
@@ -47,9 +47,9 @@ C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/uart.h:
 C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/interrupt.h: 
 C:/TI/TivaWare_C_Series-2.1.0.12573/inc/hw_ints.h: 
 C:/TI/TivaWare_C_Series-2.1.0.12573/inc/hw_uart.h: 
-../MCAL/../MCAL/../MCAL/../MCAL/EF_SpechialTIMER.h: 
-../MCAL/../MCAL/../MCAL/../MCAL/../MCAL/EF_SpechialTIMER_cfg.h: 
-../MCAL/../MCAL/../MCAL/../MCAL/../MCAL/../UtilitiesLayer/std_types.h: 
-../MCAL/../MCAL/../MCAL/../MCAL/../MCAL/EF_TIVA_Timer.h: 
-../MCAL/../MCAL/../MCAL/../MCAL/../MCAL/EF_TIVA_Timer_cfg.h: 
+../MCAL/../MCAL/../MCAL/../UtilitiesLayer/EF_SpechialTIMER.h: 
+../MCAL/../MCAL/../MCAL/../UtilitiesLayer/EF_SpechialTIMER_cfg.h: 
+../MCAL/../MCAL/../MCAL/../UtilitiesLayer/std_types.h: 
+../MCAL/../MCAL/../MCAL/../UtilitiesLayer/../MCAL/EF_TIVA_Timer.h: 
+../MCAL/../MCAL/../MCAL/../UtilitiesLayer/../MCAL/EF_TIVA_Timer_cfg.h: 
 C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/timer.h: 

@@ -50,6 +50,15 @@ U8_t SL025_LockedKeyA [6] = {9 , 8 , 7 , 6, 5  ,4};
 U8_t SL025_LockedKeyB [6] = {4 , 5 , 6 , 7, 8  ,9};
 U8_t SL025_DefaultKey [6] = {0xFF, 0xFF,0xFF ,0xFF,0xFF,0xFF} ;
 
+/****************************************************************************
+* Function    : EF_BOOLEAN_RFID_Init(RFID_ModulesEnum ModuleType)
+*
+* DESCRIPTION : Initializes the RFID module
+*
+* PARAMETERS  : ModuleType: enum type for RFID module type
+*
+* Return Value: Initialization status
+******************************************************************************/
 BOOLEAN EF_BOOLEAN_RFID_Init (RFID_ModulesEnum ModuleType)
 {
     U8_t ReturnStatus = TRUE;   /* Get the Return Status of function in it */
@@ -67,8 +76,16 @@ BOOLEAN EF_BOOLEAN_RFID_Init (RFID_ModulesEnum ModuleType)
     return ReturnStatus;
 }
 
-
-
+/****************************************************************************
+* Function    : EF_u8_RFID_IsCardExist(RFID_ModulesEnum ModuleType)
+*
+* DESCRIPTION : Check if card pin is connected and the card itself is near by to
+*               RFID module
+*
+* PARAMETERS  : ModuleType: enum type for RFID module type
+*
+* Return Value: Card existance status
+******************************************************************************/
 U8_t EF_u8_RFID_IsCardExist (RFID_ModulesEnum ModuleType )
 {
     U8_t ReturnStatus = 0;   /* Get the Return Status of function in it */
@@ -87,9 +104,18 @@ U8_t EF_u8_RFID_IsCardExist (RFID_ModulesEnum ModuleType )
     return ReturnStatus;
 }
 
-
-
-
+/****************************************************************************
+* Function    : EF_u8_RFID_GetCardNumber (RFID_ModulesEnum ModuleType , U8_t* u8CardNumber_ptr ,U8_t* u8CardLength_ptr)
+*
+* DESCRIPTION : Get RFID card number
+*
+* PARAMETERS  : ModuleType:       enum type for RFID module type
+*               u8CardNumber_ptr: Pointer to the returned CardNumber.
+*               u8CardLength_ptr: Pointer to returned Card Length, the old
+*                                 standard is 4 bytes and the new is 7bytes.
+*
+* Return Value: Getting Card number status
+******************************************************************************/
 U8_t EF_u8_RFID_GetCardNumber (RFID_ModulesEnum ModuleType , U8_t* u8CardNumber_ptr ,U8_t* u8CardLength_ptr  )
 {
     U8_t ReturnStatus = 0;   /* Get the Return Status of function in it */
@@ -108,7 +134,16 @@ U8_t EF_u8_RFID_GetCardNumber (RFID_ModulesEnum ModuleType , U8_t* u8CardNumber_
     return ReturnStatus;
 }
 
-
+/****************************************************************************
+* Function    : EF_u8_RFID_PrepareCard (RFID_ModulesEnum ModuleType)
+*
+* DESCRIPTION : locking all sectors with a locking key except for the working
+*               sector
+*
+* PARAMETERS  : ModuleType: enum type for RFID module type
+*
+* Return Value: Working sector login status
+******************************************************************************/
 U8_t EF_u8_RFID_PrepareCard (RFID_ModulesEnum ModuleType )
 {
     volatile U8_t ReturnStatus = 0;   /* Get the Return Status of function in it */
@@ -160,9 +195,16 @@ U8_t EF_u8_RFID_PrepareCard (RFID_ModulesEnum ModuleType )
     return ReturnStatus;
 }
 
-
-
-
+/****************************************************************************
+* Function    : EF_u8_RFID_GetUserBalance (RFID_ModulesEnum ModuleType , U8_t * u8Balance_ptr )
+*
+* DESCRIPTION : Get the current user balance
+*
+* PARAMETERS  : ModuleType:    enum type for RFID module type
+*               u8Balance_ptr: A pointer to the returned balance
+*
+* Return Value: Working sector login status
+******************************************************************************/
 U8_t EF_u8_RFID_GetUserBalance (RFID_ModulesEnum ModuleType , U8_t * u8Balance_ptr )
 {
     U8_t ReturnStatus = 0;   /* Get the Return Status of function in it */
@@ -187,8 +229,16 @@ U8_t EF_u8_RFID_GetUserBalance (RFID_ModulesEnum ModuleType , U8_t * u8Balance_p
 
 }
 
-
-
+/****************************************************************************
+* Function    : EF_u8_RFID_UpdateUserBalance  (RFID_ModulesEnum ModuleType , U16_t u16Balance )
+*
+* DESCRIPTION : Update the user balance to a certain value
+*
+* PARAMETERS  : ModuleType: enum type for RFID module type
+*               u16Balance: The value of the new balance
+*
+* Return Value: Login or Writing status
+******************************************************************************/
 U8_t EF_u8_RFID_UpdateUserBalance (RFID_ModulesEnum ModuleType , U16_t u16Balance )
 {
 
@@ -212,9 +262,16 @@ U8_t EF_u8_RFID_UpdateUserBalance (RFID_ModulesEnum ModuleType , U16_t u16Balanc
 
 }
 
-
-
-
+/****************************************************************************
+* Function    : EF_u8_RFID_AddUserBalance  (RFID_ModulesEnum ModuleType , U16_t u16Balance )
+*
+* DESCRIPTION : Increment the user balance by a certain value
+*
+* PARAMETERS  : ModuleType: enum type for RFID module type
+*               u16Balance: The value of the balance increment
+*
+* Return Value: Login, Reading or Writing status
+******************************************************************************/
 U8_t EF_u8_RFID_AddUserBalance (RFID_ModulesEnum ModuleType , U16_t u16Balance )
 {
     U8_t ReturnStatus = TRUE;   /* Get the Return Status of function in it */
@@ -241,10 +298,16 @@ U8_t EF_u8_RFID_AddUserBalance (RFID_ModulesEnum ModuleType , U16_t u16Balance )
     return ReturnStatus;
 }
 
-
-
-
-
+/****************************************************************************
+* Function    : EF_u8_RFID_SubtractUserBalance (RFID_ModulesEnum ModuleType , U16_t u16Balance )
+*
+* DESCRIPTION : Decrement the user balance by a certain value
+*
+* PARAMETERS  : ModuleType: enum type for RFID module type
+*               u16Balance: The value of the balance decrement
+*
+* Return Value: Login, Reading or Writing status
+******************************************************************************/
 U8_t EF_u8_RFID_SubtractUserBalance (RFID_ModulesEnum ModuleType , U16_t u16SubtractedValue )
 {
     U8_t ReturnStatus = TRUE;   /* Get the Return Status of function in it */

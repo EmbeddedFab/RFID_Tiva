@@ -33,10 +33,10 @@ HAL/EF_SLM025M.obj: ../HAL/../MCAL/EF_TIVA_DIO_cfg.h
 HAL/EF_SLM025M.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/debug.h
 HAL/EF_SLM025M.obj: ../HAL/../MCAL/EF_TIVA_uart.h
 HAL/EF_SLM025M.obj: ../HAL/../MCAL/../MCAL/EF_TIVA_uart_cfg.h
-HAL/EF_SLM025M.obj: ../HAL/../MCAL/../MCAL/../MCAL/EF_SpechialTIMER.h
-HAL/EF_SLM025M.obj: ../HAL/../MCAL/../MCAL/../MCAL/../MCAL/EF_SpechialTIMER_cfg.h
-HAL/EF_SLM025M.obj: ../HAL/../MCAL/../MCAL/../MCAL/../MCAL/EF_TIVA_Timer.h
-HAL/EF_SLM025M.obj: ../HAL/../MCAL/../MCAL/../MCAL/../MCAL/EF_TIVA_Timer_cfg.h
+HAL/EF_SLM025M.obj: ../HAL/../MCAL/../MCAL/../UtilitiesLayer/EF_SpechialTIMER.h
+HAL/EF_SLM025M.obj: ../HAL/../MCAL/../MCAL/../UtilitiesLayer/EF_SpechialTIMER_cfg.h
+HAL/EF_SLM025M.obj: ../HAL/../MCAL/../MCAL/../UtilitiesLayer/../MCAL/EF_TIVA_Timer.h
+HAL/EF_SLM025M.obj: ../HAL/../MCAL/../MCAL/../UtilitiesLayer/../MCAL/EF_TIVA_Timer_cfg.h
 HAL/EF_SLM025M.obj: ../HAL/EF_SLM025M.h
 HAL/EF_SLM025M.obj: ../HAL/EF_SLM025M_cfg.h
 
@@ -73,9 +73,9 @@ C:/TI/ccsv6/tools/compiler/ti-cgt-arm_5.2.3/include/Compiler_Cfg.h:
 C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/debug.h: 
 ../HAL/../MCAL/EF_TIVA_uart.h: 
 ../HAL/../MCAL/../MCAL/EF_TIVA_uart_cfg.h: 
-../HAL/../MCAL/../MCAL/../MCAL/EF_SpechialTIMER.h: 
-../HAL/../MCAL/../MCAL/../MCAL/../MCAL/EF_SpechialTIMER_cfg.h: 
-../HAL/../MCAL/../MCAL/../MCAL/../MCAL/EF_TIVA_Timer.h: 
-../HAL/../MCAL/../MCAL/../MCAL/../MCAL/EF_TIVA_Timer_cfg.h: 
+../HAL/../MCAL/../MCAL/../UtilitiesLayer/EF_SpechialTIMER.h: 
+../HAL/../MCAL/../MCAL/../UtilitiesLayer/EF_SpechialTIMER_cfg.h: 
+../HAL/../MCAL/../MCAL/../UtilitiesLayer/../MCAL/EF_TIVA_Timer.h: 
+../HAL/../MCAL/../MCAL/../UtilitiesLayer/../MCAL/EF_TIVA_Timer_cfg.h: 
 ../HAL/EF_SLM025M.h: 
 ../HAL/EF_SLM025M_cfg.h: 

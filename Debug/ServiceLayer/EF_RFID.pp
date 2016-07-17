@@ -31,10 +31,10 @@ ServiceLayer/EF_RFID.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/uart.h
 ServiceLayer/EF_RFID.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/interrupt.h
 ServiceLayer/EF_RFID.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/inc/hw_ints.h
 ServiceLayer/EF_RFID.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/inc/hw_uart.h
-ServiceLayer/EF_RFID.obj: ../ServiceLayer/../MCAL/../MCAL/../MCAL/EF_SpechialTIMER.h
-ServiceLayer/EF_RFID.obj: ../ServiceLayer/../MCAL/../MCAL/../MCAL/../MCAL/EF_SpechialTIMER_cfg.h
-ServiceLayer/EF_RFID.obj: ../ServiceLayer/../MCAL/../MCAL/../MCAL/../MCAL/EF_TIVA_Timer.h
-ServiceLayer/EF_RFID.obj: ../ServiceLayer/../MCAL/../MCAL/../MCAL/../MCAL/EF_TIVA_Timer_cfg.h
+ServiceLayer/EF_RFID.obj: ../ServiceLayer/../MCAL/../MCAL/../UtilitiesLayer/EF_SpechialTIMER.h
+ServiceLayer/EF_RFID.obj: ../ServiceLayer/../MCAL/../MCAL/../UtilitiesLayer/EF_SpechialTIMER_cfg.h
+ServiceLayer/EF_RFID.obj: ../ServiceLayer/../MCAL/../MCAL/../UtilitiesLayer/../MCAL/EF_TIVA_Timer.h
+ServiceLayer/EF_RFID.obj: ../ServiceLayer/../MCAL/../MCAL/../UtilitiesLayer/../MCAL/EF_TIVA_Timer_cfg.h
 ServiceLayer/EF_RFID.obj: C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/timer.h
 ServiceLayer/EF_RFID.obj: ../ServiceLayer/../HAL/EF_SLM025M.h
 ServiceLayer/EF_RFID.obj: ../ServiceLayer/../HAL/EF_SLM025M_cfg.h
@@ -72,10 +72,10 @@ C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/uart.h:
 C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/interrupt.h: 
 C:/TI/TivaWare_C_Series-2.1.0.12573/inc/hw_ints.h: 
 C:/TI/TivaWare_C_Series-2.1.0.12573/inc/hw_uart.h: 
-../ServiceLayer/../MCAL/../MCAL/../MCAL/EF_SpechialTIMER.h: 
-../ServiceLayer/../MCAL/../MCAL/../MCAL/../MCAL/EF_SpechialTIMER_cfg.h: 
-../ServiceLayer/../MCAL/../MCAL/../MCAL/../MCAL/EF_TIVA_Timer.h: 
-../ServiceLayer/../MCAL/../MCAL/../MCAL/../MCAL/EF_TIVA_Timer_cfg.h: 
+../ServiceLayer/../MCAL/../MCAL/../UtilitiesLayer/EF_SpechialTIMER.h: 
+../ServiceLayer/../MCAL/../MCAL/../UtilitiesLayer/EF_SpechialTIMER_cfg.h: 
+../ServiceLayer/../MCAL/../MCAL/../UtilitiesLayer/../MCAL/EF_TIVA_Timer.h: 
+../ServiceLayer/../MCAL/../MCAL/../UtilitiesLayer/../MCAL/EF_TIVA_Timer_cfg.h: 
 C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/timer.h: 
 ../ServiceLayer/../HAL/EF_SLM025M.h: 
 ../ServiceLayer/../HAL/EF_SLM025M_cfg.h: 
