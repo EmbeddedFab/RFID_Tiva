@@ -1,33 +1,33 @@
 ******************************************************************************
                   TI ARM Linker PC v5.2.3                      
 ******************************************************************************
->> Linked Sun Jul 17 13:09:36 2016
+>> Linked Tue Jul 19 18:32:34 2016
 
 OUTPUT FILE NAME:   <RFID_Tiva.out>
-ENTRY POINT SYMBOL: "_c_int00"  address: 000031c1
+ENTRY POINT SYMBOL: "_c_int00"  address: 00004055
 
 
 MEMORY CONFIGURATION
 
          name            origin    length      used     unused   attr    fill
 ----------------------  --------  ---------  --------  --------  ----  --------
-  FLASH                 00000000   00040000  0000381e  0003c7e2  R  X
-  SRAM                  20000000   00008000  0000028c  00007d74  RW X
+  FLASH                 00000000   00040000  000047c2  0003b83e  R  X
+  SRAM                  20000000   00008000  000002ac  00007d54  RW X
 
 
 SEGMENT ALLOCATION MAP
 
 run origin  load origin   length   init length attrs members
 ----------  ----------- ---------- ----------- ----- -------
-00000000    00000000    00003820   00003820    r-x
+00000000    00000000    000047c8   000047c8    r-x
   00000000    00000000    0000026c   0000026c    r-- .intvecs
-  0000026c    0000026c    000032e0   000032e0    r-x .text
-  0000354c    0000354c    00000272   00000272    r-- .const
-  000037c0    000037c0    00000060   00000060    r-- .cinit
-20000000    20000000    0000028c   00000000    rw-
+  0000026c    0000026c    00004268   00004268    r-x .text
+  000044d4    000044d4    00000276   00000276    r-- .const
+  00004750    00004750    00000078   00000078    r-- .cinit
+20000000    20000000    000002ac   00000000    rw-
   20000000    20000000    00000200   00000000    rw- .stack
-  20000200    20000200    0000004c   00000000    rw- .data
-  2000024c    2000024c    00000040   00000000    rw- .bss
+  20000200    20000200    0000006c   00000000    rw- .data
+  2000026c    2000026c    00000040   00000000    rw- .bss
 
 
 SECTION ALLOCATION MAP
@@ -38,83 +38,98 @@ section   page    origin      length       input sections
 .intvecs   0    00000000    0000026c     
                   00000000    0000026c     tm4c123gh6pm_startup_ccs.obj (.intvecs)
 
-.text      0    0000026c    000032e0     
+.text      0    0000026c    00004268     
                   0000026c    00000e28     EF_TIVA_DIO.obj (.text)
                   00001094    0000081a     EF_SLM025M.obj (.text)
                   000018ae    00000002     rtsv7M4_T_le_v4SPD16_eabi.lib : i_div0.obj (.text)
-                  000018b0    000004dc     uartstdio.obj (.text)
-                  00001d8c    00000450     EF_TIVA_uart.obj (.text)
-                  000021dc    000003a0     main.obj (.text)
-                  0000257c    00000310     EF_RFID.obj (.text)
-                  0000288c    00000230     EF_SpechialTIMER.obj (.text)
-                  00002abc    00000130     driverlib.lib : gpio.obj (.text:GPIOPadConfigSet)
-                  00002bec    00000118                   : sysctl.obj (.text:SysCtlClockGet)
-                  00002d04    000000f0                   : sysctl.obj (.text:SysCtlClockSet)
-                  00002df4    0000009c     rtsv7M4_T_le_v4SPD16_eabi.lib : memcpy_t2.obj (.text)
-                  00002e90    00000094     EF_TIVA_Timer.obj (.text)
-                  00002f24    0000008c     std_types.obj (.text)
-                  00002fb0    0000007a     rtsv7M4_T_le_v4SPD16_eabi.lib : memset_t2.obj (.text)
-                  0000302a    00000002     --HOLE-- [fill = 0]
-                  0000302c    0000006c                                   : autoinit.obj (.text)
-                  00003098    0000006a                                   : copy_decompress_rle.obj (.text)
-                  00003102    00000002     --HOLE-- [fill = 0]
-                  00003104    00000060     driverlib.lib : interrupt.obj (.text:IntEnable)
-                  00003164    0000005c                   : timer.obj (.text:TimerConfigure)
-                  000031c0    00000050     rtsv7M4_T_le_v4SPD16_eabi.lib : boot.obj (.text)
-                  00003210    0000004c                                   : cpy_tbl.obj (.text)
-                  0000325c    00000048     driverlib.lib : gpio.obj (.text:GPIOPinConfigure)
-                  000032a4    00000044     rtsv7M4_T_le_v4SPD16_eabi.lib : exit.obj (.text)
-                  000032e8    00000040     driverlib.lib : uart.obj (.text:UARTConfigSetExpClk)
-                  00003328    00000040     rtsv7M4_T_le_v4SPD16_eabi.lib : u_divt2.obj (.text)
-                  00003368    00000034     driverlib.lib : sysctl.obj (.text:SysCtlPeripheralEnable)
-                  0000339c    0000002a                   : gpio.obj (.text:GPIODirModeSet)
-                  000033c6    00000002     --HOLE-- [fill = 0]
-                  000033c8    0000001c                   : uart.obj (.text:UARTDisable)
-                  000033e4    00000018                   : gpio.obj (.text:GPIOPinTypeGPIOOutput)
-                  000033fc    00000018     rtsv7M4_T_le_v4SPD16_eabi.lib : args_main.obj (.text)
-                  00003414    00000014     driverlib.lib : uart.obj (.text:UARTEnable)
-                  00003428    00000014     rtsv7M4_T_le_v4SPD16_eabi.lib : _lock.obj (.text)
-                  0000343c    00000012     driverlib.lib : gpio.obj (.text:GPIOPinTypeGPIOInput)
-                  0000344e    00000012                   : gpio.obj (.text:GPIOPinTypeUART)
-                  00003460    00000012                   : timer.obj (.text:TimerLoadSet)
-                  00003472    00000012                   : timer.obj (.text:TimerPrescaleSet)
-                  00003484    0000000e                   : timer.obj (.text:TimerEnable)
-                  00003492    0000000e                   : uart.obj (.text:UARTCharGetNonBlocking)
-                  000034a0    0000000e                   : uart.obj (.text:UARTCharPutNonBlocking)
-                  000034ae    0000000e     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_none.obj (.text:decompress:none)
-                  000034bc    0000000c     driverlib.lib : cpu.obj (.text:CPUcpsie)
-                  000034c8    0000000c                   : uart.obj (.text:UARTCharsAvail)
-                  000034d4    0000000c                   : uart.obj (.text:UARTSpaceAvail)
-                  000034e0    0000000c     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_zero_init.obj (.text:decompress:ZI)
-                  000034ec    0000000c     tm4c123gh6pm_startup_ccs.obj (.text)
-                  000034f8    0000000a     driverlib.lib : interrupt.obj (.text:IntMasterEnable)
-                  00003502    0000000a                   : uart.obj (.text:UARTCharGet)
-                  0000350c    0000000a                   : uart.obj (.text:UARTCharPut)
-                  00003516    00000008                   : timer.obj (.text:TimerIntEnable)
-                  0000351e    00000008                   : uart.obj (.text:UARTIntEnable)
-                  00003526    00000006                   : gpio.obj (.text:GPIOPinRead)
-                  0000352c    00000006                   : gpio.obj (.text:GPIOPinWrite)
-                  00003532    00000006                   : sysctl.obj (.text:SysCtlDelay)
-                  00003538    00000006                   : uart.obj (.text:UARTClockSourceSet)
-                  0000353e    00000006     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_rle.obj (.text:decompress:rle24)
-                  00003544    00000004     driverlib.lib : timer.obj (.text:TimerIntClear)
-                  00003548    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : pre_init.obj (.text)
+                  000018b0    000005ac     EF_UserInterface.obj (.text)
+                  00001e5c    00000560     EF_LCD.obj (.text)
+                  000023bc    000004dc     uartstdio.obj (.text)
+                  00002898    00000450     EF_TIVA_uart.obj (.text)
+                  00002ce8    00000320     EF_LcdMenus.obj (.text)
+                  00003008    00000310     EF_RFID.obj (.text)
+                  00003318    00000230     EF_SpechialTIMER.obj (.text)
+                  00003548    0000018c     EF_Keypad.obj (.text)
+                  000036d4    00000130     driverlib.lib : gpio.obj (.text:GPIOPadConfigSet)
+                  00003804    00000118                   : sysctl.obj (.text:SysCtlClockGet)
+                  0000391c    000000f0                   : sysctl.obj (.text:SysCtlClockSet)
+                  00003a0c    000000c4                   : eeprom.obj (.text:EEPROMProgram)
+                  00003ad0    0000009c     rtsv7M4_T_le_v4SPD16_eabi.lib : memcpy_t2.obj (.text)
+                  00003b6c    00000098     main.obj (.text)
+                  00003c04    00000094     EF_TIVA_Timer.obj (.text)
+                  00003c98    0000008c     std_types.obj (.text)
+                  00003d24    0000007c     EF_TIVA_EEPROM.obj (.text)
+                  00003da0    0000007a     rtsv7M4_T_le_v4SPD16_eabi.lib : memset_t2.obj (.text)
+                  00003e1a    00000002     --HOLE-- [fill = 0]
+                  00003e1c    0000006c                                   : autoinit.obj (.text)
+                  00003e88    0000006a                                   : copy_decompress_rle.obj (.text)
+                  00003ef2    00000002     --HOLE-- [fill = 0]
+                  00003ef4    00000060     driverlib.lib : interrupt.obj (.text:IntEnable)
+                  00003f54    0000005c                   : timer.obj (.text:TimerConfigure)
+                  00003fb0    00000054                   : eeprom.obj (.text:EEPROMMassErase)
+                  00004004    00000050                   : sysctl.obj (.text:SysCtlPeripheralReset)
+                  00004054    00000050     rtsv7M4_T_le_v4SPD16_eabi.lib : boot.obj (.text)
+                  000040a4    0000004c                                   : cpy_tbl.obj (.text)
+                  000040f0    00000048     driverlib.lib : gpio.obj (.text:GPIOPinConfigure)
+                  00004138    00000044     rtsv7M4_T_le_v4SPD16_eabi.lib : exit.obj (.text)
+                  0000417c    00000040     driverlib.lib : eeprom.obj (.text:EEPROMInit)
+                  000041bc    00000040                   : uart.obj (.text:UARTConfigSetExpClk)
+                  000041fc    00000040     rtsv7M4_T_le_v4SPD16_eabi.lib : u_divt2.obj (.text)
+                  0000423c    0000003c     driverlib.lib : eeprom.obj (.text:_EEPROMSectorMaskSet)
+                  00004278    00000034                   : eeprom.obj (.text:EEPROMRead)
+                  000042ac    00000034                   : sysctl.obj (.text:SysCtlPeripheralEnable)
+                  000042e0    00000034                   : eeprom.obj (.text:_EEPROMSectorMaskClear)
+                  00004314    0000002a                   : gpio.obj (.text:GPIODirModeSet)
+                  0000433e    00000002     --HOLE-- [fill = 0]
+                  00004340    0000001c                   : uart.obj (.text:UARTDisable)
+                  0000435c    00000018                   : gpio.obj (.text:GPIOPinTypeGPIOOutput)
+                  00004374    00000018     rtsv7M4_T_le_v4SPD16_eabi.lib : args_main.obj (.text)
+                  0000438c    00000014     driverlib.lib : uart.obj (.text:UARTEnable)
+                  000043a0    00000014     rtsv7M4_T_le_v4SPD16_eabi.lib : _lock.obj (.text)
+                  000043b4    00000012     driverlib.lib : gpio.obj (.text:GPIOPinTypeGPIOInput)
+                  000043c6    00000012                   : gpio.obj (.text:GPIOPinTypeUART)
+                  000043d8    00000012                   : timer.obj (.text:TimerLoadSet)
+                  000043ea    00000012                   : timer.obj (.text:TimerPrescaleSet)
+                  000043fc    00000010                   : eeprom.obj (.text:_EEPROMWaitForDone)
+                  0000440c    0000000e                   : timer.obj (.text:TimerEnable)
+                  0000441a    0000000e                   : uart.obj (.text:UARTCharGetNonBlocking)
+                  00004428    0000000e                   : uart.obj (.text:UARTCharPutNonBlocking)
+                  00004436    0000000e     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_none.obj (.text:decompress:none)
+                  00004444    0000000c     driverlib.lib : cpu.obj (.text:CPUcpsie)
+                  00004450    0000000c                   : uart.obj (.text:UARTCharsAvail)
+                  0000445c    0000000c                   : uart.obj (.text:UARTSpaceAvail)
+                  00004468    0000000c     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_zero_init.obj (.text:decompress:ZI)
+                  00004474    0000000c     tm4c123gh6pm_startup_ccs.obj (.text)
+                  00004480    0000000a     driverlib.lib : interrupt.obj (.text:IntMasterEnable)
+                  0000448a    0000000a                   : uart.obj (.text:UARTCharGet)
+                  00004494    0000000a                   : uart.obj (.text:UARTCharPut)
+                  0000449e    00000008                   : timer.obj (.text:TimerIntEnable)
+                  000044a6    00000008                   : uart.obj (.text:UARTIntEnable)
+                  000044ae    00000006                   : gpio.obj (.text:GPIOPinRead)
+                  000044b4    00000006                   : gpio.obj (.text:GPIOPinWrite)
+                  000044ba    00000006                   : sysctl.obj (.text:SysCtlDelay)
+                  000044c0    00000006                   : uart.obj (.text:UARTClockSourceSet)
+                  000044c6    00000006     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_rle.obj (.text:decompress:rle24)
+                  000044cc    00000004     driverlib.lib : timer.obj (.text:TimerIntClear)
+                  000044d0    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : pre_init.obj (.text)
 
-.const     0    0000354c    00000272     
-                  0000354c    000000a8     EF_TIVA_uart.obj (.const:UART_PinConfiguration_Array)
-                  000035f4    00000090     driverlib.lib : gpio.obj (.const:g_pui32GPIOBaseAddrs)
-                  00003684    00000070                   : interrupt.obj (.const)
-                  000036f4    0000006c                   : sysctl.obj (.const:g_pui32Xtals)
-                  00003760    00000030     EF_TIVA_uart.obj (.const)
-                  00003790    0000001c     uartstdio.obj (.const)
-                  000037ac    00000012     uartstdio.obj (.const:.string)
+.const     0    000044d4    00000276     
+                  000044d4    000000a8     EF_TIVA_uart.obj (.const:UART_PinConfiguration_Array)
+                  0000457c    00000090     driverlib.lib : gpio.obj (.const:g_pui32GPIOBaseAddrs)
+                  0000460c    00000070                   : interrupt.obj (.const)
+                  0000467c    0000006c                   : sysctl.obj (.const:g_pui32Xtals)
+                  000046e8    00000030     EF_TIVA_uart.obj (.const)
+                  00004718    0000001c     uartstdio.obj (.const)
+                  00004734    00000012     uartstdio.obj (.const:.string)
+                  00004746    00000004     EF_LCD.obj (.const:.string)
 
-.cinit     0    000037c0    00000060     
-                  000037c0    0000003b     (.cinit..data.load) [load image, compression = rle]
-                  000037fb    00000001     --HOLE-- [fill = 0]
-                  000037fc    0000000c     (__TI_handler_table)
-                  00003808    00000008     (.cinit..bss.load) [load image, compression = zero_init]
-                  00003810    00000010     (__TI_cinit_table)
+.cinit     0    00004750    00000078     
+                  00004750    0000004e     (.cinit..data.load) [load image, compression = rle]
+                  0000479e    00000002     --HOLE-- [fill = 0]
+                  000047a0    0000000c     (__TI_handler_table)
+                  000047ac    00000004     --HOLE-- [fill = 0]
+                  000047b0    00000008     (.cinit..bss.load) [load image, compression = zero_init]
+                  000047b8    00000010     (__TI_cinit_table)
 
 .init_array 
 *          0    00000000    00000000     UNINITIALIZED
@@ -122,37 +137,39 @@ section   page    origin      length       input sections
 .stack     0    20000000    00000200     UNINITIALIZED
                   20000000    00000200     --HOLE--
 
-.data      0    20000200    0000004c     UNINITIALIZED
+.data      0    20000200    0000006c     UNINITIALIZED
                   20000200    0000001e     EF_RFID.obj (.data)
                   2000021e    00000002     --HOLE--
-                  20000220    00000010     EF_SLM025M.obj (.data)
-                  20000230    00000008     rtsv7M4_T_le_v4SPD16_eabi.lib : _lock.obj (.data)
-                  20000238    00000008                                   : exit.obj (.data)
-                  20000240    00000005     uartstdio.obj (.data)
-                  20000245    00000003     --HOLE--
-                  20000248    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : stkdepth_vars.obj (.data)
+                  20000220    0000001e     EF_UserInterface.obj (.data)
+                  2000023e    00000002     --HOLE--
+                  20000240    00000010     EF_SLM025M.obj (.data)
+                  20000250    00000008     rtsv7M4_T_le_v4SPD16_eabi.lib : _lock.obj (.data)
+                  20000258    00000008                                   : exit.obj (.data)
+                  20000260    00000005     uartstdio.obj (.data)
+                  20000265    00000003     --HOLE--
+                  20000268    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : stkdepth_vars.obj (.data)
 
-.bss       0    2000024c    00000040     UNINITIALIZED
-                  2000024c    0000003c     EF_SpechialTIMER.obj (.bss:timers_list)
-                  20000288    00000004     (.common:voidFuncPtr)
+.bss       0    2000026c    00000040     UNINITIALIZED
+                  2000026c    0000003c     EF_SpechialTIMER.obj (.bss:timers_list)
+                  200002a8    00000004     (.common:voidFuncPtr)
 
 .TI.persistent 
 *          0    20000200    00000000     UNINITIALIZED
 
 .TI.noinit 
-*          0    2000024c    00000000     UNINITIALIZED
+*          0    2000026c    00000000     UNINITIALIZED
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 00003810 records: 2, size/record: 8, table size: 16
-	.data: load addr=000037c0, load size=0000003b bytes, run addr=20000200, run size=0000004c bytes, compression=rle
-	.bss: load addr=00003808, load size=00000008 bytes, run addr=2000024c, run size=00000040 bytes, compression=zero_init
+__TI_cinit_table @ 000047b8 records: 2, size/record: 8, table size: 16
+	.data: load addr=00004750, load size=0000004e bytes, run addr=20000200, run size=0000006c bytes, compression=rle
+	.bss: load addr=000047b0, load size=00000008 bytes, run addr=2000026c, run size=00000040 bytes, compression=zero_init
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 000037fc records: 3, size/record: 4, table size: 12
+__TI_handler_table @ 000047a0 records: 3, size/record: 4, table size: 12
 	index: 0, handler: __TI_decompress_rle24
 	index: 1, handler: __TI_decompress_none
 	index: 2, handler: __TI_zero_init
@@ -162,15 +179,23 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 
 address   name                                
 -------   ----                                
-000032a5  C$$EXIT                             
-000034bd  CPUcpsie                            
-00002f67  EF_ArrayCopy                        
-0000257d  EF_BOOLEAN_RFID_Init                
-00002a09  EF_BOOLEAN_TimerCheck               
-00001f47  EF_BOOLEAN_UART_GetArray            
-00001fb3  EF_BOOLEAN_UART_GetArrayByLength    
-00001ecd  EF_BOOLEAN_UART_GetChar             
-00002011  EF_BOOLEAN_UART_PutChar             
+00004139  C$$EXIT                             
+00004445  CPUcpsie                            
+0000417d  EEPROMInit                          
+00003fb1  EEPROMMassErase                     
+00003a0d  EEPROMProgram                       
+00004279  EEPROMRead                          
+00003cdb  EF_ArrayCopy                        
+00003d8d  EF_BOOLEAN_EEPROM_Erase             
+00003d25  EF_BOOLEAN_EEPROM_Init              
+00003d61  EF_BOOLEAN_EEPROM_ReadNBytes        
+00003d3d  EF_BOOLEAN_EEPROM_WriteNBytes       
+00003009  EF_BOOLEAN_RFID_Init                
+00003495  EF_BOOLEAN_TimerCheck               
+00002a53  EF_BOOLEAN_UART_GetArray            
+00002abf  EF_BOOLEAN_UART_GetArrayByLength    
+000029d9  EF_BOOLEAN_UART_GetChar             
+00002b1d  EF_BOOLEAN_UART_PutChar             
 00000905  EF_S16_DIO_ReadPort                 
 00000f2b  EF_S8_DIO_CheckPin                  
 00000b0d  EF_S8_DIO_ClearPin                  
@@ -182,13 +207,15 @@ address   name
 00000851  EF_S8_DIO_WritePort                 
 00000409  EF_S8_t_DIO_InitPin                 
 00000675  EF_S8_t_DIO_InitSomePins            
-0000276d  EF_u8_RFID_AddUserBalance           
-000025d9  EF_u8_RFID_GetCardNumber            
-000026cd  EF_u8_RFID_GetUserBalance           
-000025a9  EF_u8_RFID_IsCardExist              
-00002617  EF_u8_RFID_PrepareCard              
-000027eb  EF_u8_RFID_SubtractUserBalance      
-0000271b  EF_u8_RFID_UpdateUserBalance        
+0000369f  EF_u8_KeyPad_GetKeyAfterReleasing   
+000035ad  EF_u8_KeyPad_Scan                   
+000031f9  EF_u8_RFID_AddUserBalance           
+00003065  EF_u8_RFID_GetCardNumber            
+00003159  EF_u8_RFID_GetUserBalance           
+00003035  EF_u8_RFID_IsCardExist              
+000030a3  EF_u8_RFID_PrepareCard              
+00003277  EF_u8_RFID_SubtractUserBalance      
+000031a7  EF_u8_RFID_UpdateUserBalance        
 00001311  EF_u8_SLM025M_GetCardNumber         
 000013b7  EF_u8_SLM025M_IsCardExist           
 000013c5  EF_u8_SLM025M_LoginSector           
@@ -200,34 +227,61 @@ address   name
 0000145f  EF_u8_SLM025M_UpdateMasterKey       
 00001565  EF_u8_SLM025M_WriteDataBlock        
 00001611  EF_u8_SLM025M_WriteDataValue        
-0000208d  EF_u8_UART_WaitChar                 
+00002b99  EF_u8_UART_WaitChar                 
+00003549  EF_void_KeyPad_Init                 
+000022d3  EF_void_LCD_Clear_Screen            
+00002339  EF_void_LCD_HextoASCII              
+000021cd  EF_void_LCD_goto                    
+00001f3d  EF_void_LCD_init                    
+0000226f  EF_void_LCD_print                   
+0000229f  EF_void_LCD_print_ByLength          
+00002201  EF_void_LCD_print_NUM               
+00001fb1  EF_void_LCD_send_command            
+000020bf  EF_void_LCD_send_data               
+00002eb7  EF_void_LcdMenus_BalanceUpdated     
+00002d53  EF_void_LcdMenus_CardDeteced        
+00002e93  EF_void_LcdMenus_CardRemoved        
+00002ee9  EF_void_LcdMenus_ChargeHistory      
+00002e69  EF_void_LcdMenus_ConfirmBalance     
+00002e21  EF_void_LcdMenus_EnterBalance       
+00002d21  EF_void_LcdMenus_EnterCard          
+00002db5  EF_void_LcdMenus_EnterPassword      
+00002e45  EF_void_LcdMenus_GetBalance         
+00002ce9  EF_void_LcdMenus_Init               
+00002dd9  EF_void_LcdMenus_RightPassword      
+00002d85  EF_void_LcdMenus_Selection          
+00002cfd  EF_void_LcdMenus_Welcome            
+00002dfd  EF_void_LcdMenus_WrongPassword      
 000012f1  EF_void_SLM025M_Init                
-00002917  EF_void_TimerCreate                 
-00002895  EF_void_TimerDelete                 
-000028e1  EF_void_TimerInit                   
-00002a8d  EF_void_TimerReset                  
-00002a45  EF_void_TimerStart                  
-00002a71  EF_void_TimerStop                   
-00002e91  EF_void_Timer_PORTinit              
-00002ef3  EF_void_Timer_RemoveTimerISRCallBack
-00002ee3  EF_void_Timer_SetISRCallBack        
-00002979  EF_void_TimersUpdate                
-00002151  EF_void_UART_HextoASCII             
-00001d8d  EF_void_UART_Init                   
-000020b5  EF_void_UART_PutChar                
-000020f5  EF_void_UART_SendArray              
-0000339d  GPIODirModeSet                      
-00002abd  GPIOPadConfigSet                    
-0000325d  GPIOPinConfigure                    
-00003527  GPIOPinRead                         
-0000343d  GPIOPinTypeGPIOInput                
-000033e5  GPIOPinTypeGPIOOutput               
-0000344f  GPIOPinTypeUART                     
-0000352d  GPIOPinWrite                        
-00003760  GPIO_SystCtlClock_Array             
-00003105  IntEnable                           
-000034f9  IntMasterEnable                     
-000034ed  ResetISR                            
+000033a3  EF_void_TimerCreate                 
+00003321  EF_void_TimerDelete                 
+0000336d  EF_void_TimerInit                   
+00003519  EF_void_TimerReset                  
+000034d1  EF_void_TimerStart                  
+000034fd  EF_void_TimerStop                   
+00003c05  EF_void_Timer_PORTinit              
+00003c67  EF_void_Timer_RemoveTimerISRCallBack
+00003c57  EF_void_Timer_SetISRCallBack        
+00003405  EF_void_TimersUpdate                
+00002c5d  EF_void_UART_HextoASCII             
+00002899  EF_void_UART_Init                   
+00002bc1  EF_void_UART_PutChar                
+00002c01  EF_void_UART_SendArray              
+000018f9  EF_void_UserInterface_Init          
+00001961  EF_void_UserInterface_SystemStates  
+000022e9  EF_void_uploadCustomChar            
+00004315  GPIODirModeSet                      
+000036d5  GPIOPadConfigSet                    
+000040f1  GPIOPinConfigure                    
+000044af  GPIOPinRead                         
+000043b5  GPIOPinTypeGPIOInput                
+0000435d  GPIOPinTypeGPIOOutput               
+000043c7  GPIOPinTypeUART                     
+000044b5  GPIOPinWrite                        
+000046e8  GPIO_SystCtlClock_Array             
+00003ef5  IntEnable                           
+00004481  IntMasterEnable                     
+00004475  ResetISR                            
 UNDEFED   SHT$$INIT_ARRAY$$Base               
 UNDEFED   SHT$$INIT_ARRAY$$Limit              
 20000218  SL025_DefaultKey                    
@@ -235,86 +289,91 @@ UNDEFED   SHT$$INIT_ARRAY$$Limit
 20000212  SL025_LockedKeyB                    
 20000200  SL025_WorkedKeyA                    
 20000206  SL025_WorkedKeyB                    
-00002bed  SysCtlClockGet                      
-00002d05  SysCtlClockSet                      
-00003533  SysCtlDelay                         
-00003369  SysCtlPeripheralEnable              
-00003165  TimerConfigure                      
-00003485  TimerEnable                         
-00003545  TimerIntClear                       
-00003517  TimerIntEnable                      
-00003461  TimerLoadSet                        
-00003473  TimerPrescaleSet                    
-00002efb  Timer_W0_ISR                        
-00003503  UARTCharGet                         
-00003493  UARTCharGetNonBlocking              
-0000350d  UARTCharPut                         
-000034a1  UARTCharPutNonBlocking              
-000034c9  UARTCharsAvail                      
-00003539  UARTClockSourceSet                  
-000032e9  UARTConfigSetExpClk                 
-000033c9  UARTDisable                         
-00003415  UARTEnable                          
-0000351f  UARTIntEnable                       
-000034d5  UARTSpaceAvail                      
-000018b1  UARTStdioConfig                     
-0000354c  UART_PinConfiguration_Array         
-00003778  UART_SystCtlClock_Array             
-00001a29  UARTgetc                            
-00001963  UARTgets                            
-00001d57  UARTprintf                          
-00001a5d  UARTvprintf                         
-00001911  UARTwrite                           
+00003805  SysCtlClockGet                      
+0000391d  SysCtlClockSet                      
+000044bb  SysCtlDelay                         
+000042ad  SysCtlPeripheralEnable              
+00004005  SysCtlPeripheralReset               
+00003f55  TimerConfigure                      
+0000440d  TimerEnable                         
+000044cd  TimerIntClear                       
+0000449f  TimerIntEnable                      
+000043d9  TimerLoadSet                        
+000043eb  TimerPrescaleSet                    
+00003c6f  Timer_W0_ISR                        
+0000448b  UARTCharGet                         
+0000441b  UARTCharGetNonBlocking              
+00004495  UARTCharPut                         
+00004429  UARTCharPutNonBlocking              
+00004451  UARTCharsAvail                      
+000044c1  UARTClockSourceSet                  
+000041bd  UARTConfigSetExpClk                 
+00004341  UARTDisable                         
+0000438d  UARTEnable                          
+000044a7  UARTIntEnable                       
+0000445d  UARTSpaceAvail                      
+000023bd  UARTStdioConfig                     
+000044d4  UART_PinConfiguration_Array         
+00004700  UART_SystCtlClock_Array             
+00002535  UARTgetc                            
+0000246f  UARTgets                            
+00002863  UARTprintf                          
+00002569  UARTvprintf                         
+0000241d  UARTwrite                           
 20000200  __STACK_END                         
 00000200  __STACK_SIZE                        
 20000200  __STACK_TOP                         
-00003810  __TI_CINIT_Base                     
-00003820  __TI_CINIT_Limit                    
-000037fc  __TI_Handler_Table_Base             
-00003808  __TI_Handler_Table_Limit            
-0000302d  __TI_auto_init                      
-20000238  __TI_cleanup_ptr                    
-000034af  __TI_decompress_none                
-0000353f  __TI_decompress_rle24               
-2000023c  __TI_dtors_ptr                      
+000047b8  __TI_CINIT_Base                     
+000047c8  __TI_CINIT_Limit                    
+000047a0  __TI_Handler_Table_Base             
+000047ac  __TI_Handler_Table_Limit            
+00003e1d  __TI_auto_init                      
+20000258  __TI_cleanup_ptr                    
+00004437  __TI_decompress_none                
+000044c7  __TI_decompress_rle24               
+2000025c  __TI_dtors_ptr                      
 00000000  __TI_static_base__                  
-000034e1  __TI_zero_init                      
+00004469  __TI_zero_init                      
 000018af  __aeabi_idiv0                       
-00002fb1  __aeabi_memclr                      
-00002fb1  __aeabi_memclr4                     
-00002fb1  __aeabi_memclr8                     
-00002df5  __aeabi_memcpy                      
-00002df5  __aeabi_memcpy4                     
-00002df5  __aeabi_memcpy8                     
-00002fb3  __aeabi_memset                      
-00002fb3  __aeabi_memset4                     
-00002fb3  __aeabi_memset8                     
-00003329  __aeabi_uidiv                       
-00003329  __aeabi_uidivmod                    
+00003da1  __aeabi_memclr                      
+00003da1  __aeabi_memclr4                     
+00003da1  __aeabi_memclr8                     
+00003ad1  __aeabi_memcpy                      
+00003ad1  __aeabi_memcpy4                     
+00003ad1  __aeabi_memcpy8                     
+00003da3  __aeabi_memset                      
+00003da3  __aeabi_memset4                     
+00003da3  __aeabi_memset8                     
+000041fd  __aeabi_uidiv                       
+000041fd  __aeabi_uidivmod                    
 ffffffff  __binit__                           
 ffffffff  __c_args__                          
 20000000  __stack                             
-000033fd  _args_main                          
-000031c1  _c_int00                            
-00002f25  _delay_ms                           
-00002f47  _delay_us                           
-20000230  _lock                               
-00003437  _nop                                
-0000342f  _register_lock                      
-00003429  _register_unlock                    
-00003549  _system_pre_init                    
-20000234  _unlock                             
-000032a9  abort                               
+00004375  _args_main                          
+00004055  _c_int00                            
+00003c99  _delay_ms                           
+00003cbb  _delay_us                           
+20000250  _lock                               
+000043af  _nop                                
+000043a7  _register_lock                      
+000043a1  _register_unlock                    
+000044d1  _system_pre_init                    
+20000254  _unlock                             
+0000413d  abort                               
 ffffffff  binit                               
-00003211  copy_in                             
-000032b1  exit                                
+000040a5  copy_in                             
+00004145  exit                                
 00000000  g_pfnVectors                        
-00002231  main                                
-20000248  main_func_sp                        
-00002df5  memcpy                              
-00002fb9  memset                              
-20000220  uart_cfg                            
-0000213d  void_UART_Deinit                    
+00001e5d  itoa_Convert                        
+00003bb5  main                                
+20000268  main_func_sp                        
+00003ad1  memcpy                              
+00003da9  memset                              
+20000224  u32HistoryCharge                    
+2000022c  u8pHistoryPassword                  
+20000228  u8pPasswordArray                    
+20000240  uart_cfg                            
+00002c49  void_UART_Deinit                    
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -348,113 +407,152 @@ address   name
 000017f3  EF_u8_SLM025M_RedLedOn              
 00001851  EF_u8_SLM025M_RedLedOff             
 000018af  __aeabi_idiv0                       
-000018b1  UARTStdioConfig                     
-00001911  UARTwrite                           
-00001963  UARTgets                            
-00001a29  UARTgetc                            
-00001a5d  UARTvprintf                         
-00001d57  UARTprintf                          
-00001d8d  EF_void_UART_Init                   
-00001ecd  EF_BOOLEAN_UART_GetChar             
-00001f47  EF_BOOLEAN_UART_GetArray            
-00001fb3  EF_BOOLEAN_UART_GetArrayByLength    
-00002011  EF_BOOLEAN_UART_PutChar             
-0000208d  EF_u8_UART_WaitChar                 
-000020b5  EF_void_UART_PutChar                
-000020f5  EF_void_UART_SendArray              
-0000213d  void_UART_Deinit                    
-00002151  EF_void_UART_HextoASCII             
-00002231  main                                
-0000257d  EF_BOOLEAN_RFID_Init                
-000025a9  EF_u8_RFID_IsCardExist              
-000025d9  EF_u8_RFID_GetCardNumber            
-00002617  EF_u8_RFID_PrepareCard              
-000026cd  EF_u8_RFID_GetUserBalance           
-0000271b  EF_u8_RFID_UpdateUserBalance        
-0000276d  EF_u8_RFID_AddUserBalance           
-000027eb  EF_u8_RFID_SubtractUserBalance      
-00002895  EF_void_TimerDelete                 
-000028e1  EF_void_TimerInit                   
-00002917  EF_void_TimerCreate                 
-00002979  EF_void_TimersUpdate                
-00002a09  EF_BOOLEAN_TimerCheck               
-00002a45  EF_void_TimerStart                  
-00002a71  EF_void_TimerStop                   
-00002a8d  EF_void_TimerReset                  
-00002abd  GPIOPadConfigSet                    
-00002bed  SysCtlClockGet                      
-00002d05  SysCtlClockSet                      
-00002df5  __aeabi_memcpy                      
-00002df5  __aeabi_memcpy4                     
-00002df5  __aeabi_memcpy8                     
-00002df5  memcpy                              
-00002e91  EF_void_Timer_PORTinit              
-00002ee3  EF_void_Timer_SetISRCallBack        
-00002ef3  EF_void_Timer_RemoveTimerISRCallBack
-00002efb  Timer_W0_ISR                        
-00002f25  _delay_ms                           
-00002f47  _delay_us                           
-00002f67  EF_ArrayCopy                        
-00002fb1  __aeabi_memclr                      
-00002fb1  __aeabi_memclr4                     
-00002fb1  __aeabi_memclr8                     
-00002fb3  __aeabi_memset                      
-00002fb3  __aeabi_memset4                     
-00002fb3  __aeabi_memset8                     
-00002fb9  memset                              
-0000302d  __TI_auto_init                      
-00003105  IntEnable                           
-00003165  TimerConfigure                      
-000031c1  _c_int00                            
-00003211  copy_in                             
-0000325d  GPIOPinConfigure                    
-000032a5  C$$EXIT                             
-000032a9  abort                               
-000032b1  exit                                
-000032e9  UARTConfigSetExpClk                 
-00003329  __aeabi_uidiv                       
-00003329  __aeabi_uidivmod                    
-00003369  SysCtlPeripheralEnable              
-0000339d  GPIODirModeSet                      
-000033c9  UARTDisable                         
-000033e5  GPIOPinTypeGPIOOutput               
-000033fd  _args_main                          
-00003415  UARTEnable                          
-00003429  _register_unlock                    
-0000342f  _register_lock                      
-00003437  _nop                                
-0000343d  GPIOPinTypeGPIOInput                
-0000344f  GPIOPinTypeUART                     
-00003461  TimerLoadSet                        
-00003473  TimerPrescaleSet                    
-00003485  TimerEnable                         
-00003493  UARTCharGetNonBlocking              
-000034a1  UARTCharPutNonBlocking              
-000034af  __TI_decompress_none                
-000034bd  CPUcpsie                            
-000034c9  UARTCharsAvail                      
-000034d5  UARTSpaceAvail                      
-000034e1  __TI_zero_init                      
-000034ed  ResetISR                            
-000034f9  IntMasterEnable                     
-00003503  UARTCharGet                         
-0000350d  UARTCharPut                         
-00003517  TimerIntEnable                      
-0000351f  UARTIntEnable                       
-00003527  GPIOPinRead                         
-0000352d  GPIOPinWrite                        
-00003533  SysCtlDelay                         
-00003539  UARTClockSourceSet                  
-0000353f  __TI_decompress_rle24               
-00003545  TimerIntClear                       
-00003549  _system_pre_init                    
-0000354c  UART_PinConfiguration_Array         
-00003760  GPIO_SystCtlClock_Array             
-00003778  UART_SystCtlClock_Array             
-000037fc  __TI_Handler_Table_Base             
-00003808  __TI_Handler_Table_Limit            
-00003810  __TI_CINIT_Base                     
-00003820  __TI_CINIT_Limit                    
+000018f9  EF_void_UserInterface_Init          
+00001961  EF_void_UserInterface_SystemStates  
+00001e5d  itoa_Convert                        
+00001f3d  EF_void_LCD_init                    
+00001fb1  EF_void_LCD_send_command            
+000020bf  EF_void_LCD_send_data               
+000021cd  EF_void_LCD_goto                    
+00002201  EF_void_LCD_print_NUM               
+0000226f  EF_void_LCD_print                   
+0000229f  EF_void_LCD_print_ByLength          
+000022d3  EF_void_LCD_Clear_Screen            
+000022e9  EF_void_uploadCustomChar            
+00002339  EF_void_LCD_HextoASCII              
+000023bd  UARTStdioConfig                     
+0000241d  UARTwrite                           
+0000246f  UARTgets                            
+00002535  UARTgetc                            
+00002569  UARTvprintf                         
+00002863  UARTprintf                          
+00002899  EF_void_UART_Init                   
+000029d9  EF_BOOLEAN_UART_GetChar             
+00002a53  EF_BOOLEAN_UART_GetArray            
+00002abf  EF_BOOLEAN_UART_GetArrayByLength    
+00002b1d  EF_BOOLEAN_UART_PutChar             
+00002b99  EF_u8_UART_WaitChar                 
+00002bc1  EF_void_UART_PutChar                
+00002c01  EF_void_UART_SendArray              
+00002c49  void_UART_Deinit                    
+00002c5d  EF_void_UART_HextoASCII             
+00002ce9  EF_void_LcdMenus_Init               
+00002cfd  EF_void_LcdMenus_Welcome            
+00002d21  EF_void_LcdMenus_EnterCard          
+00002d53  EF_void_LcdMenus_CardDeteced        
+00002d85  EF_void_LcdMenus_Selection          
+00002db5  EF_void_LcdMenus_EnterPassword      
+00002dd9  EF_void_LcdMenus_RightPassword      
+00002dfd  EF_void_LcdMenus_WrongPassword      
+00002e21  EF_void_LcdMenus_EnterBalance       
+00002e45  EF_void_LcdMenus_GetBalance         
+00002e69  EF_void_LcdMenus_ConfirmBalance     
+00002e93  EF_void_LcdMenus_CardRemoved        
+00002eb7  EF_void_LcdMenus_BalanceUpdated     
+00002ee9  EF_void_LcdMenus_ChargeHistory      
+00003009  EF_BOOLEAN_RFID_Init                
+00003035  EF_u8_RFID_IsCardExist              
+00003065  EF_u8_RFID_GetCardNumber            
+000030a3  EF_u8_RFID_PrepareCard              
+00003159  EF_u8_RFID_GetUserBalance           
+000031a7  EF_u8_RFID_UpdateUserBalance        
+000031f9  EF_u8_RFID_AddUserBalance           
+00003277  EF_u8_RFID_SubtractUserBalance      
+00003321  EF_void_TimerDelete                 
+0000336d  EF_void_TimerInit                   
+000033a3  EF_void_TimerCreate                 
+00003405  EF_void_TimersUpdate                
+00003495  EF_BOOLEAN_TimerCheck               
+000034d1  EF_void_TimerStart                  
+000034fd  EF_void_TimerStop                   
+00003519  EF_void_TimerReset                  
+00003549  EF_void_KeyPad_Init                 
+000035ad  EF_u8_KeyPad_Scan                   
+0000369f  EF_u8_KeyPad_GetKeyAfterReleasing   
+000036d5  GPIOPadConfigSet                    
+00003805  SysCtlClockGet                      
+0000391d  SysCtlClockSet                      
+00003a0d  EEPROMProgram                       
+00003ad1  __aeabi_memcpy                      
+00003ad1  __aeabi_memcpy4                     
+00003ad1  __aeabi_memcpy8                     
+00003ad1  memcpy                              
+00003bb5  main                                
+00003c05  EF_void_Timer_PORTinit              
+00003c57  EF_void_Timer_SetISRCallBack        
+00003c67  EF_void_Timer_RemoveTimerISRCallBack
+00003c6f  Timer_W0_ISR                        
+00003c99  _delay_ms                           
+00003cbb  _delay_us                           
+00003cdb  EF_ArrayCopy                        
+00003d25  EF_BOOLEAN_EEPROM_Init              
+00003d3d  EF_BOOLEAN_EEPROM_WriteNBytes       
+00003d61  EF_BOOLEAN_EEPROM_ReadNBytes        
+00003d8d  EF_BOOLEAN_EEPROM_Erase             
+00003da1  __aeabi_memclr                      
+00003da1  __aeabi_memclr4                     
+00003da1  __aeabi_memclr8                     
+00003da3  __aeabi_memset                      
+00003da3  __aeabi_memset4                     
+00003da3  __aeabi_memset8                     
+00003da9  memset                              
+00003e1d  __TI_auto_init                      
+00003ef5  IntEnable                           
+00003f55  TimerConfigure                      
+00003fb1  EEPROMMassErase                     
+00004005  SysCtlPeripheralReset               
+00004055  _c_int00                            
+000040a5  copy_in                             
+000040f1  GPIOPinConfigure                    
+00004139  C$$EXIT                             
+0000413d  abort                               
+00004145  exit                                
+0000417d  EEPROMInit                          
+000041bd  UARTConfigSetExpClk                 
+000041fd  __aeabi_uidiv                       
+000041fd  __aeabi_uidivmod                    
+00004279  EEPROMRead                          
+000042ad  SysCtlPeripheralEnable              
+00004315  GPIODirModeSet                      
+00004341  UARTDisable                         
+0000435d  GPIOPinTypeGPIOOutput               
+00004375  _args_main                          
+0000438d  UARTEnable                          
+000043a1  _register_unlock                    
+000043a7  _register_lock                      
+000043af  _nop                                
+000043b5  GPIOPinTypeGPIOInput                
+000043c7  GPIOPinTypeUART                     
+000043d9  TimerLoadSet                        
+000043eb  TimerPrescaleSet                    
+0000440d  TimerEnable                         
+0000441b  UARTCharGetNonBlocking              
+00004429  UARTCharPutNonBlocking              
+00004437  __TI_decompress_none                
+00004445  CPUcpsie                            
+00004451  UARTCharsAvail                      
+0000445d  UARTSpaceAvail                      
+00004469  __TI_zero_init                      
+00004475  ResetISR                            
+00004481  IntMasterEnable                     
+0000448b  UARTCharGet                         
+00004495  UARTCharPut                         
+0000449f  TimerIntEnable                      
+000044a7  UARTIntEnable                       
+000044af  GPIOPinRead                         
+000044b5  GPIOPinWrite                        
+000044bb  SysCtlDelay                         
+000044c1  UARTClockSourceSet                  
+000044c7  __TI_decompress_rle24               
+000044cd  TimerIntClear                       
+000044d1  _system_pre_init                    
+000044d4  UART_PinConfiguration_Array         
+000046e8  GPIO_SystCtlClock_Array             
+00004700  UART_SystCtlClock_Array             
+000047a0  __TI_Handler_Table_Base             
+000047ac  __TI_Handler_Table_Limit            
+000047b8  __TI_CINIT_Base                     
+000047c8  __TI_CINIT_Limit                    
 20000000  __stack                             
 20000200  SL025_WorkedKeyA                    
 20000200  __STACK_END                         
@@ -463,16 +561,19 @@ address   name
 2000020c  SL025_LockedKeyA                    
 20000212  SL025_LockedKeyB                    
 20000218  SL025_DefaultKey                    
-20000220  uart_cfg                            
-20000230  _lock                               
-20000234  _unlock                             
-20000238  __TI_cleanup_ptr                    
-2000023c  __TI_dtors_ptr                      
-20000248  main_func_sp                        
+20000224  u32HistoryCharge                    
+20000228  u8pPasswordArray                    
+2000022c  u8pHistoryPassword                  
+20000240  uart_cfg                            
+20000250  _lock                               
+20000254  _unlock                             
+20000258  __TI_cleanup_ptr                    
+2000025c  __TI_dtors_ptr                      
+20000268  main_func_sp                        
 ffffffff  __binit__                           
 ffffffff  __c_args__                          
 ffffffff  binit                               
 UNDEFED   SHT$$INIT_ARRAY$$Base               
 UNDEFED   SHT$$INIT_ARRAY$$Limit              
 
-[153 symbols]
+[195 symbols]

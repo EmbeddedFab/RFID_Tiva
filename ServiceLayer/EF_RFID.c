@@ -168,7 +168,7 @@ U8_t EF_u8_RFID_PrepareCard (RFID_ModulesEnum ModuleType )
             }
 
             Iterator++;
-            /* not to change in the Worked Sector*/
+            /* not to change in the Worked Sector */
             if (Iterator == SL025_WORKED_SECTOR)
             {
                 Iterator++;

@@ -12,11 +12,16 @@ ORDERED_OBJS += \
 "./uartstdio.obj" \
 "./UtilitiesLayer/EF_SpechialTIMER.obj" \
 "./UtilitiesLayer/std_types.obj" \
+"./ServiceLayer/EF_LcdMenus.obj" \
 "./ServiceLayer/EF_RFID.obj" \
+"./ServiceLayer/EF_UserInterface.obj" \
 "./MCAL/EF_TIVA_DIO.obj" \
+"./MCAL/EF_TIVA_EEPROM.obj" \
 "./MCAL/EF_TIVA_SPI.obj" \
 "./MCAL/EF_TIVA_Timer.obj" \
 "./MCAL/EF_TIVA_uart.obj" \
+"./HAL/EF_Keypad.obj" \
+"./HAL/EF_LCD.obj" \
 "./HAL/EF_SLM025M.obj" \
 "C:/TI/TivaWare_C_Series-2.1.0.12573/driverlib/ccs/Debug/driverlib.lib" \
 "../tm4c123gh6pz.cmd" \
@@ -165,8 +170,8 @@ RFID_Tiva.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "main.pp" "tm4c123gh6pm_startup_ccs.pp" "uartstdio.pp" "UtilitiesLayer\EF_SpechialTIMER.pp" "UtilitiesLayer\std_types.pp" "ServiceLayer\EF_RFID.pp" "MCAL\EF_TIVA_DIO.pp" "MCAL\EF_TIVA_SPI.pp" "MCAL\EF_TIVA_Timer.pp" "MCAL\EF_TIVA_uart.pp" "HAL\EF_SLM025M.pp" 
-	-$(RM) "main.obj" "tm4c123gh6pm_startup_ccs.obj" "uartstdio.obj" "UtilitiesLayer\EF_SpechialTIMER.obj" "UtilitiesLayer\std_types.obj" "ServiceLayer\EF_RFID.obj" "MCAL\EF_TIVA_DIO.obj" "MCAL\EF_TIVA_SPI.obj" "MCAL\EF_TIVA_Timer.obj" "MCAL\EF_TIVA_uart.obj" "HAL\EF_SLM025M.obj" 
+	-$(RM) "main.pp" "tm4c123gh6pm_startup_ccs.pp" "uartstdio.pp" "UtilitiesLayer\EF_SpechialTIMER.pp" "UtilitiesLayer\std_types.pp" "ServiceLayer\EF_LcdMenus.pp" "ServiceLayer\EF_RFID.pp" "ServiceLayer\EF_UserInterface.pp" "MCAL\EF_TIVA_DIO.pp" "MCAL\EF_TIVA_EEPROM.pp" "MCAL\EF_TIVA_SPI.pp" "MCAL\EF_TIVA_Timer.pp" "MCAL\EF_TIVA_uart.pp" "HAL\EF_Keypad.pp" "HAL\EF_LCD.pp" "HAL\EF_SLM025M.pp" 
+	-$(RM) "main.obj" "tm4c123gh6pm_startup_ccs.obj" "uartstdio.obj" "UtilitiesLayer\EF_SpechialTIMER.obj" "UtilitiesLayer\std_types.obj" "ServiceLayer\EF_LcdMenus.obj" "ServiceLayer\EF_RFID.obj" "ServiceLayer\EF_UserInterface.obj" "MCAL\EF_TIVA_DIO.obj" "MCAL\EF_TIVA_EEPROM.obj" "MCAL\EF_TIVA_SPI.obj" "MCAL\EF_TIVA_Timer.obj" "MCAL\EF_TIVA_uart.obj" "HAL\EF_Keypad.obj" "HAL\EF_LCD.obj" "HAL\EF_SLM025M.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

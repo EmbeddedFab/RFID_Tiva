@@ -48,7 +48,7 @@
 #include "EF_SLM025M.h"
 #include "EF_SLM025M_cfg.h"
 
-#define UART_SLM025M       UART5
+#define UART_SLM025M       UART4
 UART_cfg_str  uart_cfg = {UART_SLM025M, 9600, NUMBER_OF_BITS_8, ONE_STOP_BIT, NO_PARITY, FALSE, FALSE, TRUE, TRUE};
 
 /***************************************************************************

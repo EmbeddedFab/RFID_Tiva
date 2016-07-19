@@ -28,6 +28,8 @@
 #define EF_RFID_H_
 
 #include "../UtilitiesLayer/std_types.h"
+#include "../HAL/EF_SLM025M_cfg.h"
+#include "../HAL/EF_SLM025M.h"
 
 typedef enum
 {
