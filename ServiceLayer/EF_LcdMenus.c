@@ -158,7 +158,7 @@ void EF_void_LcdMenus_CardRemoved()
 
     EF_void_LCD_goto(1, 1);
     EF_void_LCD_print( (char *)"Card is removed");
-    _delay_ms(500);
+    _delay_ms(1000);
 
 }
 
@@ -171,7 +171,7 @@ void EF_void_LcdMenus_BalanceUpdated()
     EF_void_LCD_print( (char *)"Balance  is");
     EF_void_LCD_goto(2, 1);
     EF_void_LCD_print( (char *)"Updated");
-    _delay_ms(500);
+    _delay_ms(1000);
 }
 
 void EF_void_LcdMenus_ChargeHistory()

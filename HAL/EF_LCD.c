@@ -295,7 +295,7 @@ void EF_void_LCD_goto(U8_t y, U8_t x)
 void EF_void_LCD_print_NUM(U32_t u16Numberstring,U8_t u8RowNumber ,U8_t u8ColNumber)
 {
     U8_t ArrayIndex = 0;
-    U8_t s8DisplayStr[6] = {0};
+    U8_t s8DisplayStr[10] = {0};
     /* convert number to ASCII */
     itoa_Convert(u16Numberstring, s8DisplayStr);
     for(ArrayIndex = 0; s8DisplayStr[ArrayIndex] != 0; ArrayIndex++)

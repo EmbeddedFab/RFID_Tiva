@@ -50,6 +50,17 @@ volatile static U8_t gEnumSystemStatus = WELCOME_STATE;
 U32_t   u32HistoryCharge = 0;
 U8_t u8pPasswordArray[PASSWORD_SIZE] = {1,2,3,4};
  U8_t u8pHistoryPassword[4] = {1,1,1,1};
+ static   U8_t u8UserSelection     = 0;
+ static   U16_t u16UpdatedBalance  = 0;
+ static   U8_t u8SelectionMenuState = 0;
+ static   U8_t TempArray[PASSWORD_SIZE] = {0};
+ static   U8_t ConfirmState    = CONFIRM_PRINT_STATE;
+ static   U8_t u8HistorySwitch = 0;
+ static   U8_t u8ReadBalanceState   = 0;
+ static   U8_t u8Iterator          = 0;
+ static   U8_t u8EnterBalanceState = 0;
+ static  U8_t u8CardNumber_ptr[7] = {0};
+
 /*************************************************************
  * Local Functions/Tasks/ System States
  **************************************************************/
@@ -116,21 +127,13 @@ void EF_void_UserInterface_Init ()
 }
 
 
+
+
 void EF_void_UserInterface_SystemStates ()
 {
     volatile U8_t u8CardExistence = 0;
     volatile U8_t u8KeyPressed_Status = 0;
-    static   U8_t u8UserSelection     = 0;
-    static   U16_t u16UpdatedBalance  = 0;
-    static   U8_t u8SelectionMenuState = 0;
-    static   U8_t TempArray[PASSWORD_SIZE] = {0};
-    static   U8_t ConfirmState    = CONFIRM_PRINT_STATE;
-    static   U8_t u8HistorySwitch = 0;
     volatile U8_t u8ReturnStatus      = 0;
-    static   U8_t u8ReadBalanceState   = 0;
-    static   U8_t u8Iterator          = 0;
-    static   U8_t u8EnterBalanceState = 0;
-             U8_t u8CardNumber_ptr[7] = {0};
              U8_t u8CardNumber_NoOfDigits = 0;
 
 
@@ -142,8 +145,21 @@ void EF_void_UserInterface_SystemStates ()
         break;
 
     case ENTER_CARD_STATE:
-        EF_void_LcdMenus_EnterCard();
-        gEnumSystemStatus = CHECK_CARD_STATE;
+        u8CardExistence = EF_u8_RFID_IsCardExist(SLM025M_MODULE);
+        if(u8CardExistence == CARD_IS_DETECTED)
+        {
+            u8ReturnStatus = EF_u8_RFID_GetCardNumber(SLM025M_MODULE, u8CardNumber_ptr, &u8CardNumber_NoOfDigits);
+            if (u8ReturnStatus == SL025_STATUS_SUCCEED)
+            {
+                gEnumSystemStatus = SELECTION_STATE;
+                u8SelectionMenuState = PRINT_SELECTION_MENU;
+            }
+        }
+        if( gEnumSystemStatus == ENTER_CARD_STATE)
+        {
+            EF_void_LcdMenus_EnterCard();
+            gEnumSystemStatus = CHECK_CARD_STATE;
+        }
         break;
 
     case CHECK_CARD_STATE :
@@ -342,6 +358,8 @@ void EF_void_UserInterface_SystemStates ()
                 else if ((u8KeyPressed_Status == EXIT_KEY))
                 {
                     gEnumSystemStatus = CHANGE_BALANCE_STATE;
+                    u8EnterBalanceState = PRINT_ENTER_BALANCE;
+
                 }
             }
            break;
@@ -356,7 +374,9 @@ void EF_void_UserInterface_SystemStates ()
 
         if (u8KeyPressed_Status == EXIT_KEY)
         {
-            gEnumSystemStatus = SELECTION_STATE;
+            gEnumSystemStatus = ENTER_CARD_STATE;
+            u8ReadBalanceState = PRINT_READ_BALANCE;
+
         }
        switch (u8ReadBalanceState)
        {
