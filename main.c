@@ -48,8 +48,8 @@ static void void_InitConsole(void)
 int main(void)
 {
     volatile U8_t u8ReturnStatus = 0;
-    U8_t        u8CardNumber_ptr [7];
-    U8_t        u8CardNumber_NoOfDigits;
+             U8_t u8CardNumber_ptr [7];
+             U8_t u8CardNumber_NoOfDigits;
     //    U8_t        u8Key_6HexBytes_ptr[6]   = {0xFF, 0xFF,0xFF ,0xFF,0xFF,0xFF} ;
     //    U8_t        u8DataPtr_16HexBytes[16] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
     //    U8_t        u8DataRead[16];
@@ -64,8 +64,8 @@ int main(void)
     //    U8_t        u8BlockNumber          = 0;
     //    U8_t        u8UserBalance[4];
     //    U8_t        u8BalanceElement       = 0;
-    U16_t       u16InsertedBalance     = 1000;
-    U16_t       u16GetUserBalance      = 0;
+    U32_t       u32InsertedBalance     = 0;
+    U32_t       u32GetUserBalance      = 0;
     //    KeyTypeEnum eCardKey               = KEY_TYPE_A;
 
 
@@ -98,14 +98,14 @@ int main(void)
     {
         UARTprintf("Card detected \n");
         UARTprintf("Updating balance \n");
-        u8ReturnStatus = EF_u8_RFID_UpdateUserBalance (SLM025M_MODULE, u16InsertedBalance);
+        u8ReturnStatus = EF_u8_RFID_UpdateUserBalance (SLM025M_MODULE, u32InsertedBalance);
         if(u8ReturnStatus == SL025_STATUS_SUCCEED)
         {
             UARTprintf("Reading Balance \n");
-            u8ReturnStatus = EF_u8_RFID_GetUserBalance(SLM025M_MODULE, (U8_t*) &u16GetUserBalance);
+            u8ReturnStatus = EF_u8_RFID_GetUserBalance(SLM025M_MODULE, (U8_t*) &u32GetUserBalance);
             UARTprintf("Balance retrieved = \n");
 
-            UARTprintf("%d, ", u16GetUserBalance);
+            UARTprintf("%d, ", u32GetUserBalance);
         }
     }
     else
@@ -122,11 +122,11 @@ int main(void)
         if(u8ReturnStatus == SL025_STATUS_SUCCEED)
         {
             UARTprintf("Getting balance \n");
-            u8ReturnStatus = EF_u8_RFID_GetUserBalance(SLM025M_MODULE,  (U8_t*) &u16GetUserBalance);
+            u8ReturnStatus = EF_u8_RFID_GetUserBalance(SLM025M_MODULE,  (U8_t*) &u32GetUserBalance);
             if(u8ReturnStatus == SL025_STATUS_SUCCEED)
             {
                 UARTprintf("Balance retrieved = \n");
-                UARTprintf("%d, ", u16GetUserBalance);
+                UARTprintf("%d, ", u32GetUserBalance);
             }
         }
     }
@@ -144,11 +144,11 @@ int main(void)
         if(u8ReturnStatus == SL025_STATUS_SUCCEED)
         {
             UARTprintf("Getting balance \n");
-            u8ReturnStatus = EF_u8_RFID_GetUserBalance(SLM025M_MODULE,  (U8_t*) &u16GetUserBalance);
+            u8ReturnStatus = EF_u8_RFID_GetUserBalance(SLM025M_MODULE,  (U8_t*) &u32GetUserBalance);
             if(u8ReturnStatus == SL025_STATUS_SUCCEED)
             {
                 UARTprintf("Balance retrieved = \n");
-                UARTprintf("%d, ", u16GetUserBalance);
+                UARTprintf("%d, ", u32GetUserBalance);
 
             }
         }

@@ -107,7 +107,7 @@ U8_t EF_u8_RFID_GetUserBalance (RFID_ModulesEnum ModuleType , U8_t * u8Balance_p
 *
 * Return Value: Login or Writing status
 ******************************************************************************/
-U8_t EF_u8_RFID_UpdateUserBalance (RFID_ModulesEnum ModuleType , U16_t u16Balance );
+U8_t EF_u8_RFID_UpdateUserBalance (RFID_ModulesEnum ModuleType , U32_t u32Balance );
 
 /****************************************************************************
 * Function    : EF_u8_RFID_AddUserBalance  (RFID_ModulesEnum ModuleType , U16_t u16Balance )
@@ -119,7 +119,7 @@ U8_t EF_u8_RFID_UpdateUserBalance (RFID_ModulesEnum ModuleType , U16_t u16Balanc
 *
 * Return Value: Login, Reading or Writing status
 ******************************************************************************/
-U8_t EF_u8_RFID_AddUserBalance (RFID_ModulesEnum ModuleType , U16_t u16Balance );
+U8_t EF_u8_RFID_AddUserBalance (RFID_ModulesEnum ModuleType , U32_t u32Balance );
 
 /****************************************************************************
 * Function    : EF_u8_RFID_SubtractUserBalance (RFID_ModulesEnum ModuleType , U16_t u16Balance )
@@ -131,6 +131,6 @@ U8_t EF_u8_RFID_AddUserBalance (RFID_ModulesEnum ModuleType , U16_t u16Balance )
 *
 * Return Value: Login, Reading or Writing status
 ******************************************************************************/
-U8_t EF_u8_RFID_SubtractUserBalance (RFID_ModulesEnum ModuleType , U16_t u16Balance );
+U8_t EF_u8_RFID_SubtractUserBalance (RFID_ModulesEnum ModuleType , U32_t u32Balance );
 
 #endif /* EF_RFID_H_ */

@@ -43,7 +43,7 @@
 #define PASSWORD_SIZE       4
 #define MAX_BALANCE_SIZE    5
 #define FIRST_RELEASE_FLAG_EEPROM_ADD    228        /* EEPROM ADD to save FirstRelease flag to init Some Varablies when First Realease only */
-#define FIRST_RELEASE_FLAG_VALUE         55         /* Value in EEPROM to checked if it not saved --> init Some Varablies when First Realease only and save it */
+#define FIRST_RELEASE_FLAG_VALUE         6         /* Value in EEPROM to checked if it not saved --> init Some Varablies when First Realease only and save it */
 
 /* Variables used in Switch Cases in EF_BOOLEAN_UI_ConfigureTolerance Function */
 volatile static U8_t gEnumSystemStatus = WELCOME_STATE;
@@ -51,7 +51,7 @@ U32_t   u32HistoryCharge = 0;
 U8_t u8pPasswordArray[PASSWORD_SIZE] = {1,2,3,4};
  U8_t u8pHistoryPassword[4] = {1,1,1,1};
  static   U8_t u8UserSelection     = 0;
- static   U16_t u16UpdatedBalance  = 0;
+ static   U32_t u32UpdatedBalance  = 0;
  static   U8_t u8SelectionMenuState = 0;
  static   U8_t TempArray[PASSWORD_SIZE] = {0};
  static   U8_t ConfirmState    = CONFIRM_PRINT_STATE;
@@ -291,7 +291,7 @@ void EF_void_UserInterface_SystemStates ()
            EF_void_LcdMenus_EnterBalance();
            u8EnterBalanceState = ADD_BALANCE_KEYPAD;
            u8Iterator        = 0;
-           u16UpdatedBalance = 0;
+           u32UpdatedBalance = 0;
            break;
 
        case ADD_BALANCE_KEYPAD:
@@ -306,7 +306,7 @@ void EF_void_UserInterface_SystemStates ()
                     u8EnterBalanceState = PRINT_ENTER_BALANCE;
                 }
                 /* enter */
-                else if ( (u8KeyPressed_Status == ENTER_KEY) && (u16UpdatedBalance > 0))
+                else if ( (u8KeyPressed_Status == ENTER_KEY) && (u32UpdatedBalance > 0))
                 {
                     gEnumSystemStatus = CONFIRM_BALANCE_STATE;
                     u8EnterBalanceState = PRINT_ENTER_BALANCE;
@@ -317,7 +317,7 @@ void EF_void_UserInterface_SystemStates ()
                     if (u8Iterator != MAX_BALANCE_SIZE)
                     {
                         EF_void_LCD_send_data (u8KeyPressed_Status + '0');
-                        u16UpdatedBalance = u8KeyPressed_Status + (u16UpdatedBalance * 10);
+                        u32UpdatedBalance = u8KeyPressed_Status + (u32UpdatedBalance * 10);
                         u8Iterator++;
                     }
                 }
@@ -341,9 +341,9 @@ void EF_void_UserInterface_SystemStates ()
             {
                 if ( (u8KeyPressed_Status == ENTER_KEY) )
                 {
-                    u8ReturnStatus = EF_u8_RFID_AddUserBalance (SLM025M_MODULE,u16UpdatedBalance);
+                    u8ReturnStatus = EF_u8_RFID_AddUserBalance (SLM025M_MODULE,u32UpdatedBalance);
                     EF_BOOLEAN_EEPROM_ReadNBytes  ( &u32HistoryCharge, 400 , 4);
-                    u32HistoryCharge += u16UpdatedBalance;
+                    u32HistoryCharge += u32UpdatedBalance;
                     EF_BOOLEAN_EEPROM_WriteNBytes ( &u32HistoryCharge, 400 , 4);
                     if ( u8ReturnStatus == SL025_STATUS_SUCCEED )
                     {
@@ -386,10 +386,10 @@ void EF_void_UserInterface_SystemStates ()
            break;
 
        case READ_RFID_STATE:
-           u8ReturnStatus = EF_u8_RFID_GetUserBalance ( SLM025M_MODULE, (U8_t*) &u16UpdatedBalance);
+           u8ReturnStatus = EF_u8_RFID_GetUserBalance ( SLM025M_MODULE, (U8_t*) &u32UpdatedBalance);
            if(u8ReturnStatus == SL025_STATUS_SUCCEED)
            {
-               EF_void_LCD_print_NUM (u16UpdatedBalance, 2 ,1);
+               EF_void_LCD_print_NUM (u32UpdatedBalance, 2 ,1);
                u8ReadBalanceState = WAIT_KEYPAD_STATE;
            }
            else
@@ -427,8 +427,6 @@ void EF_void_UserInterface_SystemStates ()
        case PRINT_HISTORY_STATE:
            EF_void_LcdMenus_ChargeHistory();
            EF_BOOLEAN_EEPROM_ReadNBytes  ( &u32HistoryCharge, 400 , 4);
-           u32HistoryCharge += u16UpdatedBalance;
-           EF_BOOLEAN_EEPROM_WriteNBytes ( &u32HistoryCharge, 400 , 4);
            EF_void_LCD_print_NUM (u32HistoryCharge , 2, 1);
            u8HistorySwitch = WAIT_PRESSED_STATE;
            break;

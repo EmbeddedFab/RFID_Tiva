@@ -239,7 +239,7 @@ U8_t EF_u8_RFID_GetUserBalance (RFID_ModulesEnum ModuleType , U8_t * u8Balance_p
 *
 * Return Value: Login or Writing status
 ******************************************************************************/
-U8_t EF_u8_RFID_UpdateUserBalance (RFID_ModulesEnum ModuleType , U16_t u16Balance )
+U8_t EF_u8_RFID_UpdateUserBalance (RFID_ModulesEnum ModuleType , U32_t u32Balance )
 {
 
     U8_t ReturnStatus = TRUE;   /* Get the Return Status of function in it */
@@ -250,7 +250,7 @@ U8_t EF_u8_RFID_UpdateUserBalance (RFID_ModulesEnum ModuleType , U16_t u16Balanc
         ReturnStatus = EF_u8_SLM025M_LoginSector (SL025_WORKED_SECTOR , KEY_TYPE_B,  SL025_WorkedKeyB);
         if (ReturnStatus == SL025_LOGIN_SUCCEED)
         {
-            ReturnStatus = EF_u8_SLM025M_WriteDataValue (SL025_WORKED_SECTOR , SL025_WORKED_BLOCK, (U8_t*)&u16Balance);
+            ReturnStatus = EF_u8_SLM025M_WriteDataValue (SL025_WORKED_SECTOR , SL025_WORKED_BLOCK, (U8_t*)&u32Balance);
         }
         break;
 
@@ -272,21 +272,21 @@ U8_t EF_u8_RFID_UpdateUserBalance (RFID_ModulesEnum ModuleType , U16_t u16Balanc
 *
 * Return Value: Login, Reading or Writing status
 ******************************************************************************/
-U8_t EF_u8_RFID_AddUserBalance (RFID_ModulesEnum ModuleType , U16_t u16Balance )
+U8_t EF_u8_RFID_AddUserBalance (RFID_ModulesEnum ModuleType , U32_t u32Balance )
 {
     U8_t ReturnStatus = TRUE;   /* Get the Return Status of function in it */
-    U16_t u16GetBalance = 0;
+    U32_t u32GetBalance = 0;
     switch (ModuleType)
     {
     case SLM025M_MODULE:
         ReturnStatus = EF_u8_SLM025M_LoginSector (SL025_WORKED_SECTOR , KEY_TYPE_B,  SL025_WorkedKeyB);
         if (ReturnStatus == SL025_LOGIN_SUCCEED)
         {
-            ReturnStatus = EF_u8_SLM025M_ReadDataValue (SL025_WORKED_SECTOR , SL025_WORKED_BLOCK, (U8_t*)&u16GetBalance);
+            ReturnStatus = EF_u8_SLM025M_ReadDataValue (SL025_WORKED_SECTOR , SL025_WORKED_BLOCK, (U8_t*)&u32GetBalance);
             if (ReturnStatus == SL025_STATUS_SUCCEED)
             {
-                u16Balance = u16Balance + u16GetBalance;
-                ReturnStatus = EF_u8_SLM025M_WriteDataValue (SL025_WORKED_SECTOR , SL025_WORKED_BLOCK, (U8_t*)&u16Balance);
+                u32Balance = u32Balance + u32GetBalance;
+                ReturnStatus = EF_u8_SLM025M_WriteDataValue (SL025_WORKED_SECTOR , SL025_WORKED_BLOCK, (U8_t*)&u32Balance);
             }
         }
         break;
@@ -308,26 +308,26 @@ U8_t EF_u8_RFID_AddUserBalance (RFID_ModulesEnum ModuleType , U16_t u16Balance )
 *
 * Return Value: Login, Reading or Writing status
 ******************************************************************************/
-U8_t EF_u8_RFID_SubtractUserBalance (RFID_ModulesEnum ModuleType , U16_t u16SubtractedValue )
+U8_t EF_u8_RFID_SubtractUserBalance (RFID_ModulesEnum ModuleType , U32_t u32SubtractedValue )
 {
     U8_t ReturnStatus = TRUE;   /* Get the Return Status of function in it */
-    U16_t u16GetBalance = 0;
+    U32_t u32GetBalance = 0;
     switch (ModuleType)
     {
     case SLM025M_MODULE:
         ReturnStatus = EF_u8_SLM025M_LoginSector (SL025_WORKED_SECTOR , KEY_TYPE_B,  SL025_WorkedKeyB);
         if (ReturnStatus == SL025_LOGIN_SUCCEED)
         {
-            ReturnStatus = EF_u8_SLM025M_ReadDataValue (SL025_WORKED_SECTOR , SL025_WORKED_BLOCK, (U8_t*)&u16GetBalance);
+            ReturnStatus = EF_u8_SLM025M_ReadDataValue (SL025_WORKED_SECTOR , SL025_WORKED_BLOCK, (U8_t*)&u32GetBalance);
             if (ReturnStatus == SL025_STATUS_SUCCEED)
             {
-                if (u16SubtractedValue > u16GetBalance)
+                if (u32SubtractedValue > u32GetBalance)
                 {
                     //todo zeroing ??
                     return BALANCE_LOW_CANNOT_SUB;
                 }
-                u16SubtractedValue = u16GetBalance - u16SubtractedValue;
-                ReturnStatus = EF_u8_SLM025M_WriteDataValue (SL025_WORKED_SECTOR , SL025_WORKED_BLOCK, (U8_t*)&u16SubtractedValue);
+                u32SubtractedValue = u32GetBalance - u32SubtractedValue;
+                ReturnStatus = EF_u8_SLM025M_WriteDataValue (SL025_WORKED_SECTOR , SL025_WORKED_BLOCK, (U8_t*)&u32SubtractedValue);
             }
         }
         break;
